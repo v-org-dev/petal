@@ -35,52 +35,54 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
   const pathname = usePathname()
 
   return (
-    <SidebarLayout
-      navbar={
-        <Navbar>
-          <NavbarSection className="max-lg:hidden">
-            {/* 导航栏可以添加搜索或其他功能 */}
-          </NavbarSection>
-        </Navbar>
-      }
-      sidebar={
-        <Sidebar>
-          <SidebarHeader>
-            <div className="flex items-center gap-3">
-              <div className="flex size-8 items-center justify-center rounded-lg bg-indigo-500">
-                <span className="text-sm font-semibold text-white">P</span>
+    <div className="workspace-light-mode" style={{ colorScheme: 'light' }}>
+      <SidebarLayout
+        navbar={
+          <Navbar>
+            <NavbarSection className="max-lg:hidden">
+              {/* 导航栏可以添加搜索或其他功能 */}
+            </NavbarSection>
+          </Navbar>
+        }
+        sidebar={
+          <Sidebar>
+            <SidebarHeader>
+              <div className="flex items-center gap-3">
+                <div className="flex size-8 items-center justify-center rounded-lg bg-indigo-500">
+                  <span className="text-sm font-semibold text-white">P</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-zinc-950 dark:text-white">Petal 客服</span>
+                  <span className="text-xs text-zinc-500 dark:text-zinc-400">工作空间</span>
+                </div>
               </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-semibold text-zinc-950 dark:text-white">Petal 客服</span>
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">工作空间</span>
-              </div>
-            </div>
-          </SidebarHeader>
+            </SidebarHeader>
 
-          <SidebarBody>
-            <SidebarSection>
-              {navigation.map((item) => (
-                <SidebarItem key={item.name} href={item.href} current={pathname === item.href}>
-                  <item.icon data-slot="icon" />
-                  <SidebarLabel>{item.name}</SidebarLabel>
-                </SidebarItem>
-              ))}
-            </SidebarSection>
-          </SidebarBody>
+            <SidebarBody>
+              <SidebarSection>
+                {navigation.map((item) => (
+                  <SidebarItem key={item.name} href={item.href} current={pathname === item.href}>
+                    <item.icon data-slot="icon" />
+                    <SidebarLabel>{item.name}</SidebarLabel>
+                  </SidebarItem>
+                ))}
+              </SidebarSection>
+            </SidebarBody>
 
-          <SidebarFooter>
-            <SidebarItem href="#">
-              <Avatar
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                className="size-8"
-              />
-              <SidebarLabel>管理员</SidebarLabel>
-            </SidebarItem>
-          </SidebarFooter>
-        </Sidebar>
-      }
-    >
-      {children}
-    </SidebarLayout>
+            <SidebarFooter>
+              <SidebarItem href="#">
+                <Avatar
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  className="size-8"
+                />
+                <SidebarLabel>管理员</SidebarLabel>
+              </SidebarItem>
+            </SidebarFooter>
+          </Sidebar>
+        }
+      >
+        {children}
+      </SidebarLayout>
+    </div>
   )
 }
