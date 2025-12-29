@@ -1,119 +1,240 @@
-import Link from 'next/link'
-import { Badge } from '@/components/ui/badge'
-import { Button, buttonClasses } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Bell, CreditCard, KeyRound, Settings, ShieldCheck } from 'lucide-react'
+'use client'
 
-const cards = [
-  {
-    title: 'Workspace basics',
-    description: 'Keep the settings tab light—just note that it owns branding and access.',
-    icon: Settings,
-    badge: 'Core',
-  },
-  {
-    title: 'Notifications',
-    description: 'Decide later which alerts you want. For now, keep the shell.',
-    icon: Bell,
-    badge: 'Muted',
-  },
-  {
-    title: 'Security & API',
-    description: 'API keys, roles, and review rules stay here once you add detail.',
-    icon: ShieldCheck,
-    badge: 'Guardrails',
-  },
-]
+import { useState } from 'react'
+import { Heading, Subheading } from '@/components/ui/catalyst/heading'
+import { Divider } from '@/components/ui/catalyst/divider'
+import { Input } from '@/components/ui/catalyst/input'
+import { Select } from '@/components/ui/catalyst/select'
+import { Switch, SwitchField } from '@/components/ui/catalyst/switch'
+import { Field, Fieldset, Label, Legend } from '@/components/ui/catalyst/fieldset'
+import { Button } from '@/components/ui/catalyst/button'
+import { Badge } from '@/components/ui/catalyst/badge'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/catalyst/table'
+import { workspaceSettings } from '@/components/dashboard/mock-data'
 
-const notes = [
-  'Settings tab remains for navigation consistency; detailed forms are intentionally removed.',
-  'Lucide icons and shadcn cards keep the bright theme aligned with other tabs.',
-  'When ready, drop billing, API keys, and toggles back into these sections.',
+const tabs = [
+  { name: 'General', value: 'general' },
+  { name: 'Notifications', value: 'notifications' },
+  { name: 'Security', value: 'security' },
+  { name: 'API', value: 'api' },
 ]
 
 export default function SettingsPage() {
+  const [activeTab, setActiveTab] = useState('general')
+
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-0 space-y-1">
-          <p className="text-sm font-medium text-indigo-600">Settings</p>
-          <h1 className="text-3xl font-semibold text-slate-900">Workspace shell</h1>
-          <p className="text-sm text-slate-600">Bright, simple placeholders—only the tab structure is kept.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link href="/dashboard/team" className={buttonClasses({ variant: 'outline' })}>
-            Team & roles
-          </Link>
-          <Button className="gap-2">
-            <Settings className="h-4 w-4" /> Save placeholder
-          </Button>
-        </div>
+    <div className="space-y-10">
+      {/* Header */}
+      <div>
+        <Heading>Settings</Heading>
+        <p className="mt-2 text-sm/6 text-zinc-500 dark:text-zinc-400">
+          Manage your workspace settings and preferences
+        </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {cards.map((card) => {
-          const Icon = card.icon
-          return (
-            <Card key={card.title} className="h-full">
-              <CardHeader className="flex flex-row items-start justify-between">
-                <div className="space-y-1">
-                  <CardTitle>{card.title}</CardTitle>
-                  <CardDescription>{card.description}</CardDescription>
-                </div>
-                <Badge>{card.badge}</Badge>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between pt-1 text-sm text-slate-700">
-                <div className="flex items-center gap-3">
-                  <span className="grid size-10 place-items-center rounded-xl bg-slate-50 text-slate-700 ring-1 ring-slate-200">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span>Ready for later detail.</span>
-                </div>
-                <Button variant="ghost" size="sm">
-                  Open
-                </Button>
-              </CardContent>
-            </Card>
-          )
-        })}
-      </div>
-
-      <Card>
-        <CardHeader className="flex flex-row items-start justify-between">
-          <div className="space-y-1">
-            <CardTitle>Billing & API</CardTitle>
-            <CardDescription>Use this space when you’re ready to wire payments and keys.</CardDescription>
-          </div>
-          <CreditCard className="h-5 w-5 text-indigo-600" />
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm text-slate-700">
-          <div className="flex flex-wrap items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-            <KeyRound className="h-4 w-4 text-indigo-600" />
-            <span>API tokens live here—add them once the redesign settles.</span>
-            <Badge variant="outline">Placeholder</Badge>
-          </div>
-          <div className="flex flex-wrap items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-            <CreditCard className="h-4 w-4 text-indigo-600" />
-            <span>Billing cards, invoices, and usage can return later.</span>
-            <Badge variant="outline">Not configured</Badge>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Notes for this tab</CardTitle>
-          <CardDescription>Everything stays light—no heavy forms until content is ready.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm text-slate-700">
-          {notes.map((note) => (
-            <div key={note} className="flex items-start gap-2">
-              <span className="mt-1 h-2 w-2 rounded-full bg-indigo-500" />
-              <span>{note}</span>
-            </div>
+      {/* Secondary Tab Navigation */}
+      <div className="border-b border-white/10">
+        <nav className="-mb-px flex gap-x-6">
+          {tabs.map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => setActiveTab(tab.value)}
+              className={`border-b-2 px-1 pb-4 text-sm/6 font-semibold ${
+                activeTab === tab.value
+                  ? 'border-indigo-500 text-indigo-400'
+                  : 'border-transparent text-zinc-500 hover:border-zinc-300 hover:text-zinc-300'
+              }`}
+            >
+              {tab.name}
+            </button>
           ))}
-        </CardContent>
-      </Card>
+        </nav>
+      </div>
+
+      {/* Tab Content */}
+      {activeTab === 'general' && (
+        <div className="space-y-8">
+          <Fieldset>
+            <Legend>Workspace Basics</Legend>
+            <Divider className="mt-4" soft />
+
+            <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2">
+              <Field>
+                <Label>Workspace Name</Label>
+                <Input
+                  name="workspace_name"
+                  defaultValue={workspaceSettings.basics.workspaceName}
+                />
+              </Field>
+
+              <Field>
+                <Label>Display URL</Label>
+                <Input
+                  name="display_url"
+                  defaultValue={workspaceSettings.basics.displayUrl}
+                />
+              </Field>
+
+              <Field className="sm:col-span-2">
+                <Label>Description</Label>
+                <Input
+                  name="description"
+                  defaultValue={workspaceSettings.basics.description}
+                />
+              </Field>
+            </div>
+          </Fieldset>
+
+          <Fieldset>
+            <Legend>Branding</Legend>
+            <Divider className="mt-4" soft />
+
+            <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2">
+              <Field>
+                <Label>Primary Color</Label>
+                <Input
+                  type="text"
+                  name="primary_color"
+                  defaultValue={workspaceSettings.branding.primaryColor}
+                />
+              </Field>
+
+              <Field>
+                <Label>Logo</Label>
+                <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                  No logo uploaded
+                </div>
+              </Field>
+            </div>
+          </Fieldset>
+
+          <div className="flex justify-end gap-4">
+            <Button outline>Cancel</Button>
+            <Button color="indigo">Save Changes</Button>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'notifications' && (
+        <div className="space-y-8">
+          <Fieldset>
+            <Legend>Notification Preferences</Legend>
+            <Divider className="mt-4" soft />
+
+            <div className="mt-6 space-y-6">
+              <SwitchField>
+                <Label>Email Notifications</Label>
+                <Switch
+                  name="email_notifications"
+                  defaultChecked={workspaceSettings.notifications.email}
+                />
+              </SwitchField>
+
+              <SwitchField>
+                <Label>Slack Notifications</Label>
+                <Switch
+                  name="slack_notifications"
+                  defaultChecked={workspaceSettings.notifications.slack}
+                />
+              </SwitchField>
+
+              <Field>
+                <Label>Webhook URL</Label>
+                <Input
+                  type="url"
+                  name="webhook_url"
+                  placeholder="https://example.com/webhook"
+                  defaultValue={workspaceSettings.notifications.webhook}
+                />
+              </Field>
+            </div>
+          </Fieldset>
+
+          <div className="flex justify-end gap-4">
+            <Button outline>Cancel</Button>
+            <Button color="indigo">Save Changes</Button>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'security' && (
+        <div className="space-y-8">
+          <Fieldset>
+            <Legend>Security Settings</Legend>
+            <Divider className="mt-4" soft />
+
+            <div className="mt-6 space-y-6">
+              <SwitchField>
+                <Label>Two-Factor Authentication</Label>
+                <Switch
+                  name="two_factor"
+                  defaultChecked={workspaceSettings.security.twoFactor}
+                />
+              </SwitchField>
+
+              <Field>
+                <Label>Session Timeout (minutes)</Label>
+                <Select name="session_timeout" defaultValue={workspaceSettings.security.sessionTimeout.toString()}>
+                  <option value="15">15 minutes</option>
+                  <option value="30">30 minutes</option>
+                  <option value="60">1 hour</option>
+                  <option value="120">2 hours</option>
+                </Select>
+              </Field>
+            </div>
+          </Fieldset>
+
+          <div className="flex justify-end gap-4">
+            <Button outline>Cancel</Button>
+            <Button color="indigo">Save Changes</Button>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'api' && (
+        <div className="space-y-8">
+          <div className="flex items-start justify-between">
+            <div>
+              <Subheading>API Keys</Subheading>
+              <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                Manage API keys for programmatic access
+              </p>
+            </div>
+            <Button color="indigo">Create New Key</Button>
+          </div>
+
+          <Divider soft />
+
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>Name</TableHeader>
+                <TableHeader>Key</TableHeader>
+                <TableHeader>Created</TableHeader>
+                <TableHeader>Last Used</TableHeader>
+                <TableHeader>Actions</TableHeader>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {workspaceSettings.api.keys.map((key) => (
+                <TableRow key={key.id}>
+                  <TableCell className="font-medium">{key.name}</TableCell>
+                  <TableCell>
+                    <code className="text-xs text-zinc-500 dark:text-zinc-400">{key.key}</code>
+                  </TableCell>
+                  <TableCell className="text-zinc-500">{key.created}</TableCell>
+                  <TableCell className="text-zinc-500">{key.lastUsed}</TableCell>
+                  <TableCell>
+                    <Button plain className="text-red-600 hover:text-red-700">
+                      Revoke
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
     </div>
   )
 }

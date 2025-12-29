@@ -1,115 +1,240 @@
-import Link from 'next/link'
-import { CheckCircle2, Clock3, Inbox, Send, ShieldCheck } from 'lucide-react'
+'use client'
 
-import { Badge } from '@/components/ui/badge'
-import { Button, buttonClasses } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useState } from 'react'
+import { Heading, Subheading } from '@/components/ui/catalyst/heading'
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/catalyst/table'
+import { Avatar } from '@/components/ui/catalyst/avatar'
+import { Badge } from '@/components/ui/catalyst/badge'
+import { Button } from '@/components/ui/catalyst/button'
+import { Divider } from '@/components/ui/catalyst/divider'
+import { conversations, messageThreads } from '@/components/dashboard/mock-data'
 
 const queues = [
-  {
-    title: 'Needs human review',
-    description: 'Conversations that should stay lightweight until rules are set.',
-    badge: 'Today',
-  },
-  {
-    title: 'Awaiting approvals',
-    description: 'Drafts the AI prepared but require a quick glance.',
-    badge: 'Safe to trim',
-  },
-  {
-    title: 'Follow-ups',
-    description: 'Threads paused for more context—keep them simple for now.',
-    badge: 'In progress',
-  },
-]
-
-const checklist = [
-  'Keep only the inbox tab—detailed tickets are intentionally removed.',
-  'Use bright shadcn buttons for quick triage actions.',
-  'Route anything that feels heavy into the knowledge base later.',
+  { name: 'Needs Review', value: 'needs_review', count: 23 },
+  { name: 'Awaiting Approval', value: 'awaiting_approval', count: 12 },
+  { name: 'Follow Ups', value: 'follow_up', count: 8 },
 ]
 
 export default function InboxPage() {
+  const [activeQueue, setActiveQueue] = useState('needs_review')
+  const [selectedConversation, setSelectedConversation] = useState(conversations[0])
+
+  const filteredConversations = conversations.filter(
+    (conv) => conv.queue === activeQueue
+  )
+
+  const getStatusBadgeColor = (status: string) => {
+    switch (status) {
+      case 'needs_review':
+        return 'amber'
+      case 'awaiting_approval':
+        return 'blue'
+      case 'follow_up':
+        return 'zinc'
+      default:
+        return 'zinc'
+    }
+  }
+
+  const messages = messageThreads[selectedConversation.id as keyof typeof messageThreads] || []
+
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-0 space-y-1">
-          <p className="text-sm font-medium text-indigo-600">Inbox</p>
-          <h1 className="text-3xl font-semibold text-slate-900">Lightweight triage</h1>
-          <p className="text-sm text-slate-600">Only the inbox tab remains—everything inside is pared back.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link href="/dashboard/suggestions" className={buttonClasses({ variant: 'outline' })}>
-            Send to AI suggestions
-          </Link>
-          <Button>Assign owner</Button>
-        </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <Heading>Inbox</Heading>
+        <p className="mt-2 text-sm/6 text-zinc-500 dark:text-zinc-400">
+          Manage and triage customer conversations
+        </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {queues.map((item) => (
-          <Card key={item.title} className="h-full">
-            <CardHeader className="flex flex-row items-start justify-between">
-              <div className="space-y-1">
-                <CardTitle>{item.title}</CardTitle>
-                <CardDescription>{item.description}</CardDescription>
-              </div>
-              <Badge variant="outline">{item.badge}</Badge>
-            </CardHeader>
-            <CardContent className="flex items-center justify-between pt-1 text-sm text-slate-700">
-              <span className="flex items-center gap-2">
-                {item.title === 'Awaiting approvals' ? (
-                  <ShieldCheck className="h-4 w-4 text-emerald-600" />
-                ) : item.title === 'Follow-ups' ? (
-                  <Clock3 className="h-4 w-4 text-amber-500" />
-                ) : (
-                  <Inbox className="h-4 w-4 text-indigo-600" />
-                )}
-                <span>Keep it short and clear.</span>
-              </span>
-              <Button variant="ghost" size="sm">
-                View
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {/* 3-Column Layout */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        {/* Left Sidebar - Queue Filters */}
+        <div className="lg:col-span-3 space-y-6">
+          <div>
+            <Subheading>Queues</Subheading>
+            <Divider className="mt-4" soft />
 
-      <div className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
-        <Card>
-          <CardHeader>
-            <CardTitle>How to use this inbox</CardTitle>
-            <CardDescription>Everything inside should stay concise while the dashboard resets.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-3 text-sm text-slate-700">
-              {checklist.map((item) => (
-                <li key={item} className="flex items-start gap-2">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 text-indigo-600" />
-                  <span>{item}</span>
-                </li>
+            <div className="mt-4 space-y-1">
+              {queues.map((queue) => (
+                <button
+                  key={queue.value}
+                  onClick={() => setActiveQueue(queue.value)}
+                  className={`w-full flex items-center justify-between rounded-lg px-3 py-2 text-left text-sm/6 ${
+                    activeQueue === queue.value
+                      ? 'bg-zinc-950/5 text-zinc-950 dark:bg-white/10 dark:text-white'
+                      : 'text-zinc-600 hover:bg-zinc-950/5 dark:text-zinc-400 dark:hover:bg-white/5'
+                  }`}
+                >
+                  <span>{queue.name}</span>
+                  <Badge color={activeQueue === queue.value ? 'indigo' : 'zinc'} className="text-xs">
+                    {queue.count}
+                  </Badge>
+                </button>
               ))}
-            </ul>
-          </CardContent>
-        </Card>
+            </div>
+          </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick actions</CardTitle>
-            <CardDescription>These are simple placeholders—use them as you reintroduce detail.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm text-slate-700">
-            <Button className="w-full justify-start gap-2" variant="secondary">
-              <Send className="h-4 w-4" /> Send concise reply
-            </Button>
-            <Button className="w-full justify-start gap-2" variant="outline">
-              <ShieldCheck className="h-4 w-4" /> Approve draft
-            </Button>
-            <Button className="w-full justify-start gap-2" variant="ghost">
-              <Clock3 className="h-4 w-4" /> Snooze for later
-            </Button>
-          </CardContent>
-        </Card>
+          <div>
+            <Subheading>Stats</Subheading>
+            <Divider className="mt-4" soft />
+
+            <div className="mt-4 space-y-3 text-sm">
+              <div className="flex justify-between">
+                <span className="text-zinc-500 dark:text-zinc-400">Total</span>
+                <span className="font-medium text-zinc-950 dark:text-white">43</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500 dark:text-zinc-400">Avg Response</span>
+                <span className="font-medium text-zinc-950 dark:text-white">2.4m</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500 dark:text-zinc-400">Resolved Today</span>
+                <span className="font-medium text-zinc-950 dark:text-white">156</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Center - Conversations Table */}
+        <div className="lg:col-span-5">
+          <div className="flex items-center justify-between mb-4">
+            <Subheading>
+              {queues.find((q) => q.value === activeQueue)?.name}
+            </Subheading>
+            <span className="text-sm text-zinc-500 dark:text-zinc-400">
+              {filteredConversations.length} conversations
+            </span>
+          </div>
+
+          <Divider soft />
+
+          <Table className="mt-4">
+            <TableBody>
+              {filteredConversations.map((conversation) => (
+                <TableRow
+                  key={conversation.id}
+                  onClick={() => setSelectedConversation(conversation)}
+                  className={`cursor-pointer ${
+                    selectedConversation.id === conversation.id
+                      ? 'bg-zinc-950/5 dark:bg-white/5'
+                      : ''
+                  }`}
+                >
+                  <TableCell>
+                    <div className="flex items-start gap-3">
+                      <Avatar
+                        src={conversation.user.avatar}
+                        initials={conversation.user.initials}
+                        className="size-10"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-zinc-950 dark:text-white">
+                            {conversation.user.name}
+                          </span>
+                          <Badge color={getStatusBadgeColor(conversation.status) as any} className="text-xs">
+                            {conversation.status.replace('_', ' ')}
+                          </Badge>
+                        </div>
+                        <div className="mt-1 text-sm font-medium text-zinc-700 dark:text-zinc-300 truncate">
+                          {conversation.subject}
+                        </div>
+                        <div className="mt-1 text-sm text-zinc-500 dark:text-zinc-400 truncate">
+                          {conversation.preview}
+                        </div>
+                        <div className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">
+                          {conversation.timestamp}
+                        </div>
+                      </div>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        {/* Right Sidebar - Thread Preview */}
+        <div className="lg:col-span-4 space-y-6">
+          <div>
+            <Subheading>Thread Preview</Subheading>
+            <Divider className="mt-4" soft />
+          </div>
+
+          {selectedConversation && (
+            <div className="space-y-6">
+              {/* Conversation Header */}
+              <div className="flex items-start gap-3">
+                <Avatar
+                  src={selectedConversation.user.avatar}
+                  initials={selectedConversation.user.initials}
+                  className="size-12"
+                />
+                <div>
+                  <div className="font-semibold text-zinc-950 dark:text-white">
+                    {selectedConversation.user.name}
+                  </div>
+                  <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                    {selectedConversation.subject}
+                  </div>
+                  <div className="mt-1">
+                    <Badge color={getStatusBadgeColor(selectedConversation.status) as any}>
+                      {selectedConversation.status.replace('_', ' ')}
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+
+              <Divider soft />
+
+              {/* Messages */}
+              <div className="space-y-4 max-h-96 overflow-y-auto">
+                {messages.length > 0 ? (
+                  messages.map((message) => (
+                    <div
+                      key={message.id}
+                      className={`rounded-lg p-3 ${
+                        message.sender === 'customer'
+                          ? 'bg-zinc-100 dark:bg-zinc-800'
+                          : 'bg-indigo-50 dark:bg-indigo-900/20'
+                      }`}
+                    >
+                      <div className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">
+                        {message.sender === 'customer' ? 'Customer' : 'Agent'} · {message.timestamp}
+                      </div>
+                      <div className="text-sm text-zinc-900 dark:text-zinc-100">
+                        {message.content}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-sm text-zinc-500 dark:text-zinc-400">
+                    No messages in this conversation
+                  </div>
+                )}
+              </div>
+
+              <Divider soft />
+
+              {/* Quick Actions */}
+              <div className="space-y-2">
+                <Button color="indigo" className="w-full">
+                  Send Reply
+                </Button>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button outline className="w-full">
+                    Approve Draft
+                  </Button>
+                  <Button outline className="w-full">
+                    Snooze
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

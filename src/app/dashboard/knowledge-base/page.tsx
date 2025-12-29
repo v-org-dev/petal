@@ -1,124 +1,211 @@
-import Link from 'next/link'
-import { Archive, BookOpen, Database, FileText, Sparkles, Upload } from 'lucide-react'
+'use client'
 
-import { Badge } from '@/components/ui/badge'
-import { Button, buttonClasses } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useState } from 'react'
+import { Heading } from '@/components/ui/catalyst/heading'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/catalyst/table'
+import { Avatar } from '@/components/ui/catalyst/avatar'
+import { Badge } from '@/components/ui/catalyst/badge'
+import { Button } from '@/components/ui/catalyst/button'
+import { Divider } from '@/components/ui/catalyst/divider'
+import { DescriptionDetails, DescriptionList, DescriptionTerm } from '@/components/ui/catalyst/description-list'
+import { Pagination, PaginationList, PaginationNext, PaginationPage, PaginationPrevious } from '@/components/ui/catalyst/pagination'
+import { articles } from '@/components/dashboard/mock-data'
 
-const sections = [
-  {
-    title: 'Sources',
-    description: 'Connect docs, feeds, and uploads without adding details yet.',
-    icon: Database,
-    badge: 'Ready',
-  },
-  {
-    title: 'Articles',
-    description: 'Use shadcn cards to keep content tidy and bright.',
-    icon: FileText,
-    badge: 'Light',
-  },
-  {
-    title: 'Review queue',
-    description: 'Hold suggested edits here until you want to expand.',
-    icon: Archive,
-    badge: 'Parked',
-  },
-]
-
-const guidance = [
-  'Keep categories in place; specific entries can be filled later.',
-  'Lucide icons and shadcn components power the refreshed layout.',
-  'Use the light theme to highlight what matters at a glance.',
+const tabs = [
+  { name: 'Overview', value: 'overview' },
+  { name: 'Sources', value: 'sources' },
+  { name: 'Articles', value: 'articles' },
+  { name: 'Review', value: 'review' },
 ]
 
 export default function KnowledgeBasePage() {
+  const [activeTab, setActiveTab] = useState('articles')
+  const [selectedArticle, setSelectedArticle] = useState(articles[0])
+
+  const getStatusBadgeColor = (status: string) => {
+    switch (status) {
+      case 'live':
+        return 'green'
+      case 'draft':
+        return 'amber'
+      case 'review':
+        return 'blue'
+      default:
+        return 'zinc'
+    }
+  }
+
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-0 space-y-1">
-          <p className="text-sm font-medium text-indigo-600">Knowledge base</p>
-          <h1 className="text-3xl font-semibold text-slate-900">Organize the guardrails</h1>
-          <p className="text-sm text-slate-600">Tabs remain; the content is intentionally minimal while you rebuild.</p>
+    <div className="space-y-10">
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div>
+          <Heading>Knowledge Base</Heading>
+          <p className="mt-2 text-sm/6 text-zinc-500 dark:text-zinc-400">
+            Manage your knowledge base articles and content
+          </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" className="gap-2">
-            <Upload className="h-4 w-4" /> Placeholder upload
-          </Button>
-          <Link href="/dashboard/suggestions" className={buttonClasses({})}>
-            Review AI notes
-          </Link>
-        </div>
+        <Button color="indigo">Upload Content</Button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {sections.map((section) => {
-          const Icon = section.icon
-          return (
-            <Card key={section.title} className="h-full">
-              <CardHeader className="flex flex-row items-start justify-between">
-                <div className="space-y-1">
-                  <CardTitle>{section.title}</CardTitle>
-                  <CardDescription>{section.description}</CardDescription>
-                </div>
-                <Badge>{section.badge}</Badge>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between pt-1">
-                <div className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                  <span className="grid size-10 place-items-center rounded-xl bg-slate-50 text-slate-700 ring-1 ring-slate-200">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span>Keep this lane simple.</span>
-                </div>
-                <Button variant="ghost" size="sm">
-                  Open
-                </Button>
-              </CardContent>
-            </Card>
-          )
-        })}
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>How to handle content now</CardTitle>
-          <CardDescription>Leave specifics out. Focus on where information will live once you’re ready.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm text-slate-700">
-          {guidance.map((item) => (
-            <div key={item} className="flex items-start gap-2">
-              <Sparkles className="mt-0.5 h-4 w-4 text-indigo-600" />
-              <span>{item}</span>
-            </div>
+      {/* Secondary Tab Navigation */}
+      <div className="border-b border-white/10">
+        <nav className="-mb-px flex gap-x-6">
+          {tabs.map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => setActiveTab(tab.value)}
+              className={`border-b-2 px-1 pb-4 text-sm/6 font-semibold ${
+                activeTab === tab.value
+                  ? 'border-indigo-500 text-indigo-400'
+                  : 'border-transparent text-zinc-500 hover:border-zinc-300 hover:text-zinc-300'
+              }`}
+            >
+              {tab.name}
+            </button>
           ))}
-          <div className="flex flex-wrap gap-2 pt-2 text-xs font-medium text-slate-600">
-            <Badge variant="outline">Tabs stay</Badge>
-            <Badge variant="outline">Details paused</Badge>
-            <Badge variant="outline">Bright theme</Badge>
-          </div>
-        </CardContent>
-      </Card>
+        </nav>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Shortcuts</CardTitle>
-          <CardDescription>Move between knowledge tasks without adding heavy data.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <Link href="/dashboard/knowledge-base" className={buttonClasses({ variant: 'secondary', className: 'justify-center' })}>
-            <BookOpen className="mr-2 h-4 w-4" /> Overview
-          </Link>
-          <Link href="/dashboard/knowledge-base" className={buttonClasses({ variant: 'outline', className: 'justify-center' })}>
-            <Database className="mr-2 h-4 w-4" /> Sources
-          </Link>
-          <Link href="/dashboard/knowledge-base" className={buttonClasses({ variant: 'ghost', className: 'justify-center' })}>
-            <FileText className="mr-2 h-4 w-4" /> Articles
-          </Link>
-          <Link href="/dashboard/knowledge-base" className={buttonClasses({ variant: 'ghost', className: 'justify-center' })}>
-            <Archive className="mr-2 h-4 w-4" /> Review
-          </Link>
-        </CardContent>
-      </Card>
+      {/* Tab Content */}
+      {activeTab === 'articles' && (
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          {/* Articles Table */}
+          <div className="lg:col-span-2">
+            <Table striped>
+              <TableHead>
+                <TableRow>
+                  <TableHeader>Title</TableHeader>
+                  <TableHeader>Author</TableHeader>
+                  <TableHeader>Status</TableHeader>
+                  <TableHeader>Updated</TableHeader>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {articles.map((article) => (
+                  <TableRow
+                    key={article.id}
+                    onClick={() => setSelectedArticle(article)}
+                    className="cursor-pointer"
+                  >
+                    <TableCell className="font-medium">
+                      <div>{article.title}</div>
+                      <div className="text-xs text-zinc-500 dark:text-zinc-400">{article.category}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Avatar
+                          src={article.author.avatar}
+                          initials={article.author.initials}
+                          className="size-6"
+                        />
+                        <span className="text-sm">{article.author.name}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge color={getStatusBadgeColor(article.status) as any}>
+                        {article.status.charAt(0).toUpperCase() + article.status.slice(1)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-zinc-500">{article.updated}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+            <Pagination className="mt-6">
+              <PaginationPrevious href={null} />
+              <PaginationList>
+                <PaginationPage href="#" current>
+                  1
+                </PaginationPage>
+                <PaginationPage href="#">2</PaginationPage>
+              </PaginationList>
+              <PaginationNext href="#" />
+            </Pagination>
+          </div>
+
+          {/* Article Preview Sidebar */}
+          <div className="space-y-6">
+            <div>
+              <Heading level={2}>Article Preview</Heading>
+              <Divider className="mt-4" soft />
+            </div>
+
+            {selectedArticle && (
+              <div className="space-y-6">
+                <div>
+                  <div className="text-lg font-semibold text-zinc-950 dark:text-white">
+                    {selectedArticle.title}
+                  </div>
+                  <div className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                    {selectedArticle.category}
+                  </div>
+                </div>
+
+                <DescriptionList>
+                  <DescriptionTerm>Status</DescriptionTerm>
+                  <DescriptionDetails>
+                    <Badge color={getStatusBadgeColor(selectedArticle.status) as any}>
+                      {selectedArticle.status.charAt(0).toUpperCase() + selectedArticle.status.slice(1)}
+                    </Badge>
+                  </DescriptionDetails>
+
+                  <DescriptionTerm>Author</DescriptionTerm>
+                  <DescriptionDetails>
+                    <div className="flex items-center gap-2">
+                      <Avatar
+                        src={selectedArticle.author.avatar}
+                        initials={selectedArticle.author.initials}
+                        className="size-6"
+                      />
+                      <span>{selectedArticle.author.name}</span>
+                    </div>
+                  </DescriptionDetails>
+
+                  <DescriptionTerm>Last Updated</DescriptionTerm>
+                  <DescriptionDetails>{selectedArticle.updated}</DescriptionDetails>
+
+                  <DescriptionTerm>Views</DescriptionTerm>
+                  <DescriptionDetails>
+                    {selectedArticle.views.toLocaleString()} views
+                  </DescriptionDetails>
+
+                  <DescriptionTerm>Category</DescriptionTerm>
+                  <DescriptionDetails>{selectedArticle.category}</DescriptionDetails>
+                </DescriptionList>
+
+                <div>
+                  <Divider soft />
+                  <div className="mt-4">
+                    <div className="text-sm font-medium text-zinc-950 dark:text-white mb-3">
+                      Content Preview
+                    </div>
+                    <div className="text-sm text-zinc-600 dark:text-zinc-400">
+                      This is a preview of the article content. The full article would be displayed here with
+                      formatting and media.
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button outline className="flex-1">Edit</Button>
+                  <Button color="indigo" className="flex-1">Publish</Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Other tabs placeholder */}
+      {activeTab !== 'articles' && (
+        <div className="text-center py-12">
+          <p className="text-zinc-500 dark:text-zinc-400">
+            {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} content coming soon
+          </p>
+        </div>
+      )}
     </div>
   )
 }

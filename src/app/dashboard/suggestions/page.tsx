@@ -1,103 +1,141 @@
-import Link from 'next/link'
-import { CheckCircle2, FolderKanban, Lightbulb, Sparkles, Wand2 } from 'lucide-react'
-
-import { Badge } from '@/components/ui/badge'
-import { Button, buttonClasses } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-
-const lanes = [
-  {
-    title: 'New ideas',
-    description: 'AI surfaced topics from recent chats. Keep it light and review later.',
-    icon: Lightbulb,
-    badge: 'Fresh',
-  },
-  {
-    title: 'Needs approval',
-    description: 'Placeholders for edits that will power the knowledge base.',
-    icon: CheckCircle2,
-    badge: 'Waiting',
-  },
-  {
-    title: 'Backlog',
-    description: 'Anything you want to park while rebuilding the dashboard.',
-    icon: FolderKanban,
-    badge: 'Parked',
-  },
-]
-
-const tips = [
-  'Only the tab structure matters right now; details stay out of the way.',
-  'Use lucide icons and shadcn cards to keep everything consistent.',
-  'When ready, push approved ideas straight into the knowledge base tab.',
-]
+import { Heading } from '@/components/ui/catalyst/heading'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/catalyst/table'
+import { Badge } from '@/components/ui/catalyst/badge'
+import {
+  Dropdown,
+  DropdownButton,
+  DropdownItem,
+  DropdownMenu,
+} from '@/components/ui/catalyst/dropdown'
+import { EllipsisVerticalIcon } from '@heroicons/react/16/solid'
+import { Pagination, PaginationGap, PaginationList, PaginationNext, PaginationPage, PaginationPrevious } from '@/components/ui/catalyst/pagination'
+import { suggestions } from '@/components/dashboard/mock-data'
 
 export default function SuggestionsPage() {
+  const getStatusBadgeColor = (status: string) => {
+    switch (status) {
+      case 'new':
+        return 'blue'
+      case 'needs_approval':
+        return 'amber'
+      case 'backlog':
+        return 'zinc'
+      default:
+        return 'zinc'
+    }
+  }
+
+  const getPriorityBadgeColor = (priority: string) => {
+    switch (priority) {
+      case 'high':
+        return 'red'
+      case 'medium':
+        return 'amber'
+      case 'low':
+        return 'zinc'
+      default:
+        return 'zinc'
+    }
+  }
+
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-0 space-y-1">
-          <p className="text-sm font-medium text-indigo-600">AI suggestions</p>
-          <h1 className="text-3xl font-semibold text-slate-900">Capture ideas, skip the clutter</h1>
-          <p className="text-sm text-slate-600">Suggestions stay simple while the dashboard refresh rolls out.</p>
+    <div className="space-y-10">
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div>
+          <Heading>AI Suggestions</Heading>
+          <p className="mt-2 text-sm/6 text-zinc-500 dark:text-zinc-400">
+            Review AI-generated suggestions from customer conversations
+          </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Link href="/dashboard/knowledge-base" className={buttonClasses({ variant: 'outline' })}>
-            Open knowledge base
-          </Link>
-          <Button className="gap-2">
-            <Wand2 className="h-4 w-4" /> Approve later
-          </Button>
-        </div>
+
+        {/* Sort Dropdown */}
+        <Dropdown>
+          <DropdownButton outline>
+            Sort by
+            <svg className="size-4 fill-zinc-500" viewBox="0 0 16 16">
+              <path d="M5.75 10.75L8 13L10.25 10.75" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M10.25 5.25L8 3L5.75 5.25" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </DropdownButton>
+          <DropdownMenu>
+            <DropdownItem>Priority</DropdownItem>
+            <DropdownItem>Frequency</DropdownItem>
+            <DropdownItem>Status</DropdownItem>
+            <DropdownItem>Last Seen</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {lanes.map((lane) => {
-          const Icon = lane.icon
-          return (
-            <Card key={lane.title} className="h-full">
-              <CardHeader className="flex flex-row items-start justify-between">
-                <div className="space-y-1">
-                  <CardTitle>{lane.title}</CardTitle>
-                  <CardDescription>{lane.description}</CardDescription>
+      {/* Full-width Suggestions Table */}
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeader>Suggestion</TableHeader>
+            <TableHeader>Source</TableHeader>
+            <TableHeader>Status</TableHeader>
+            <TableHeader>Priority</TableHeader>
+            <TableHeader>Frequency</TableHeader>
+            <TableHeader>Last Seen</TableHeader>
+            <TableHeader></TableHeader>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {suggestions.map((suggestion) => (
+            <TableRow key={suggestion.id}>
+              <TableCell className="font-medium max-w-md">
+                <div className="truncate">{suggestion.suggestion}</div>
+              </TableCell>
+              <TableCell>
+                <Badge color="zinc">{suggestion.source}</Badge>
+              </TableCell>
+              <TableCell>
+                <Badge color={getStatusBadgeColor(suggestion.status) as any}>
+                  {suggestion.status.replace('_', ' ')}
+                </Badge>
+              </TableCell>
+              <TableCell>
+                <Badge color={getPriorityBadgeColor(suggestion.priority) as any}>
+                  {suggestion.priority.charAt(0).toUpperCase() + suggestion.priority.slice(1)}
+                </Badge>
+              </TableCell>
+              <TableCell className="text-zinc-500">{suggestion.frequency} times</TableCell>
+              <TableCell className="text-zinc-500">{suggestion.lastSeen}</TableCell>
+              <TableCell>
+                <div className="-mx-3 -my-1.5 sm:-mx-2.5">
+                  <Dropdown>
+                    <DropdownButton plain aria-label="More options">
+                      <EllipsisVerticalIcon />
+                    </DropdownButton>
+                    <DropdownMenu anchor="bottom end">
+                      <DropdownItem>View Details</DropdownItem>
+                      <DropdownItem>Approve</DropdownItem>
+                      <DropdownItem>Move to Backlog</DropdownItem>
+                      <DropdownItem>Archive</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
                 </div>
-                <Badge>{lane.badge}</Badge>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between pt-1">
-                <div className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                  <span className="grid size-10 place-items-center rounded-xl bg-slate-50 text-slate-700 ring-1 ring-slate-200">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span>Keep notes minimal.</span>
-                </div>
-                <Button variant="ghost" size="sm">
-                  View
-                </Button>
-              </CardContent>
-            </Card>
-          )
-        })}
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Working style for this tab</CardTitle>
-          <CardDescription>Lucide icons, shadcn components, and a bright theme guide the refresh.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm text-slate-700">
-          {tips.map((tip) => (
-            <div key={tip} className="flex items-start gap-2">
-              <Sparkles className="mt-0.5 h-4 w-4 text-indigo-600" />
-              <span>{tip}</span>
-            </div>
+              </TableCell>
+            </TableRow>
           ))}
-          <div className="flex flex-wrap gap-2 pt-2 text-xs font-medium text-slate-600">
-            <Badge variant="outline">Tabs intact</Badge>
-            <Badge variant="outline">Content lightweight</Badge>
-            <Badge variant="outline">Shadcn ready</Badge>
-          </div>
-        </CardContent>
-      </Card>
+        </TableBody>
+      </Table>
+
+      {/* Pagination */}
+      <Pagination>
+        <PaginationPrevious href={null} />
+        <PaginationList>
+          <PaginationPage href="#" current>
+            1
+          </PaginationPage>
+          <PaginationPage href="#">2</PaginationPage>
+          <PaginationPage href="#">3</PaginationPage>
+          <PaginationGap />
+          <PaginationPage href="#">8</PaginationPage>
+          <PaginationPage href="#">9</PaginationPage>
+        </PaginationList>
+        <PaginationNext href="#" />
+      </Pagination>
     </div>
   )
 }

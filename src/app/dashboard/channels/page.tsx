@@ -1,85 +1,116 @@
-import Link from 'next/link'
-import { Badge } from '@/components/ui/badge'
-import { Button, buttonClasses } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Globe2, Mail, MessageCircle, PhoneCall, SignalHigh } from 'lucide-react'
-
-const connections = [
-  {
-    name: 'Web chat',
-    status: 'Live',
-    detail: 'Minimal config—just a bright shell for now.',
-    icon: MessageCircle,
-  },
-  { name: 'Email handoff', status: 'Live', detail: 'Keeps the inbox tab connected.', icon: Mail },
-  { name: 'Social', status: 'Queued', detail: 'Messenger, Instagram, and more when ready.', icon: Globe2 },
-  { name: 'Voice', status: 'Planned', detail: 'Hold place for call routing rules.', icon: PhoneCall },
-]
+import { Heading, Subheading } from '@/components/ui/catalyst/heading'
+import { Stat } from '@/components/dashboard/stat'
+import { Badge } from '@/components/ui/catalyst/badge'
+import { Divider } from '@/components/ui/catalyst/divider'
+import { Button } from '@/components/ui/catalyst/button'
+import { DescriptionDetails, DescriptionList, DescriptionTerm } from '@/components/ui/catalyst/description-list'
+import { channelStats, channels } from '@/components/dashboard/mock-data'
 
 export default function ChannelsPage() {
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'live':
+        return 'green'
+      case 'queued':
+        return 'amber'
+      case 'planned':
+        return 'zinc'
+      default:
+        return 'zinc'
+    }
+  }
+
+  const getStatusDot = (status: string) => {
+    switch (status) {
+      case 'live':
+        return 'bg-green-500'
+      case 'queued':
+        return 'bg-amber-500'
+      case 'planned':
+        return 'bg-zinc-400'
+      default:
+        return 'bg-zinc-400'
+    }
+  }
+
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-0 space-y-1">
-          <p className="text-sm font-medium text-indigo-600">Channels</p>
-          <h1 className="text-3xl font-semibold text-slate-900">Keep routes simple</h1>
-          <p className="text-sm text-slate-600">Only the channel categories stay—no deep settings until you’re ready.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link href="/dashboard/inbox" className={buttonClasses({ variant: 'outline' })}>
-            View inbox
-          </Link>
-          <Button>Add channel placeholder</Button>
-        </div>
+    <div className="space-y-10">
+      {/* Header */}
+      <div>
+        <Heading>Channels</Heading>
+        <p className="mt-2 text-sm/6 text-zinc-500 dark:text-zinc-400">
+          Manage your multi-channel communication integrations
+        </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        {connections.map((connection) => {
-          const Icon = connection.icon
-          return (
-            <Card key={connection.name} className="h-full">
-              <CardHeader className="flex flex-row items-start justify-between">
-                <div className="space-y-1">
-                  <CardTitle>{connection.name}</CardTitle>
-                  <CardDescription>{connection.detail}</CardDescription>
-                </div>
-                <Badge variant="outline">{connection.status}</Badge>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between pt-1 text-sm text-slate-700">
-                <div className="flex items-center gap-3">
-                  <span className="grid size-10 place-items-center rounded-xl bg-slate-50 text-slate-700 ring-1 ring-slate-200">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span>Bright shell only.</span>
-                </div>
-                <Button variant="ghost" size="sm">
-                  Open
-                </Button>
-              </CardContent>
-            </Card>
-          )
-        })}
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {channelStats.map((stat) => (
+          <Stat key={stat.title} {...stat} />
+        ))}
       </div>
 
-      <Card>
-        <CardHeader className="flex flex-row items-start justify-between">
-          <div className="space-y-1">
-            <CardTitle>Fallback & coverage</CardTitle>
-            <CardDescription>Keep escalation notes lightweight and revisit when you add detail.</CardDescription>
-          </div>
-          <SignalHigh className="h-5 w-5 text-indigo-600" />
-        </CardHeader>
-        <CardContent className="grid gap-3 md:grid-cols-2">
-          <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
-            <p className="font-semibold text-slate-900">Confidence rules</p>
-            <p>Route low-confidence threads to the inbox; everything else stays here as a placeholder.</p>
-          </div>
-          <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
-            <p className="font-semibold text-slate-900">Hours & languages</p>
-            <p>Note coverage ideas without wiring schedules yet.</p>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Channels List */}
+      <div>
+        <Subheading>Active Channels</Subheading>
+        <Divider className="mt-4" soft />
+
+        <div className="mt-6 space-y-8">
+          {channels.map((channel, index) => (
+            <div key={channel.id}>
+              {index > 0 && <Divider soft />}
+              <div className="flex items-start justify-between gap-6">
+                <div className="flex items-start gap-4">
+                  {/* Status Dot */}
+                  <div className={`mt-2 size-2 shrink-0 rounded-full ${getStatusDot(channel.status)}`} />
+
+                  <div className="space-y-3">
+                    <div>
+                      <div className="flex items-center gap-3">
+                        <Subheading level={3}>{channel.name}</Subheading>
+                        <Badge color={getStatusColor(channel.status) as any}>
+                          {channel.status.charAt(0).toUpperCase() + channel.status.slice(1)}
+                        </Badge>
+                        {channel.status === 'live' && (
+                          <span className="text-sm text-zinc-500 dark:text-zinc-400">
+                            {channel.messagestoday} msgs today
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{channel.description}</p>
+                    </div>
+
+                    <DescriptionList>
+                      {channel.deployUrl && (
+                        <>
+                          <DescriptionTerm>Deploy URL</DescriptionTerm>
+                          <DescriptionDetails>{channel.deployUrl}</DescriptionDetails>
+                        </>
+                      )}
+
+                      {channel.avgResponseTime && (
+                        <>
+                          <DescriptionTerm>Avg Response</DescriptionTerm>
+                          <DescriptionDetails>{channel.avgResponseTime}</DescriptionDetails>
+                        </>
+                      )}
+
+                      {channel.status !== 'planned' && (
+                        <>
+                          <DescriptionTerm>Type</DescriptionTerm>
+                          <DescriptionDetails className="capitalize">{channel.type}</DescriptionDetails>
+                        </>
+                      )}
+                    </DescriptionList>
+                  </div>
+                </div>
+
+                <Button outline>Configure</Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
