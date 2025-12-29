@@ -28,7 +28,7 @@ export function LoginForm() {
       setError(error.message)
       setLoading(false)
     } else {
-      router.push('/workspace')
+      router.push('/dashboard')
       router.refresh()
     }
   }
