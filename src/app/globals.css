@@ -24,7 +24,9 @@
     background-color: var(--color-mauve-100);
     --scroll-padding-top: 0;
     scroll-padding-top: var(--scroll-padding-top);
+  }
 
+  html:not(:has(.workspace-light-mode)) {
     @variant dark {
       background-color: var(--color-mauve-950);
     }
@@ -32,6 +34,22 @@
 
   /* 强制 workspace 区域使用亮色主题 */
   .workspace-light-mode {
-    color-scheme: light only;
+    color-scheme: light !important;
+    background-color: white !important;
+    color: #111827 !important;
+    min-height: 100vh;
+  }
+
+  .workspace-light-mode * {
+    color-scheme: light !important;
+  }
+
+  /* 确保workspace内的所有元素使用正确的颜色 */
+  .workspace-light-mode,
+  .workspace-light-mode > * {
+    @variant dark {
+      background-color: white;
+      color: #111827;
+    }
   }
 }

@@ -23,13 +23,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
   const isDashboard = pathname?.startsWith('/dashboard')
+  const isWorkspace = pathname?.startsWith('/workspace')
   const isAuth =
     pathname?.startsWith('/login') ||
     pathname?.startsWith('/signup') ||
     pathname?.startsWith('/forgot-password') ||
     pathname?.startsWith('/auth')
 
-  if (isDashboard || isAuth) {
+  if (isDashboard || isWorkspace || isAuth) {
     return <>{children}</>
   }
 
