@@ -1,126 +1,168 @@
 import { Heading } from '@/components/ui/catalyst/heading'
-import { Stat } from '@/components/dashboard/stat'
+import { Stat } from '@/components/workspace/stat'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/catalyst/table'
 import { Avatar } from '@/components/ui/catalyst/avatar'
 import { Badge } from '@/components/ui/catalyst/badge'
-import { DescriptionDetails, DescriptionList, DescriptionTerm } from '@/components/ui/catalyst/description-list'
 import { Divider } from '@/components/ui/catalyst/divider'
-import { workspaceStats, conversations } from '@/components/workspace/mock-data'
+import { DescriptionDetails, DescriptionList, DescriptionTerm } from '@/components/ui/catalyst/description-list'
+import { conversations, overviewStats } from '@/components/workspace/mock-data'
 
-export default function WorkspaceDashboardPage() {
-  // 获取前6条对话用于显示最近活动
-  const recentActivity = conversations.slice(0, 6)
+const statusStyles = {
+  needs_review: { label: 'Needs review', color: 'amber' as const },
+  awaiting_approval: { label: 'Awaiting approval', color: 'blue' as const },
+  follow_up: { label: 'Follow up', color: 'emerald' as const },
+}
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'needs_review':
-        return 'amber'
-      case 'awaiting_approval':
-        return 'blue'
-      case 'follow_up':
-        return 'zinc'
-      default:
-        return 'zinc'
-    }
-  }
+const queueDescriptions = {
+  needs_review: 'Responses to polish before sending.',
+  awaiting_approval: 'Ready for final approval.',
+  follow_up: 'Waiting on next touchpoint.',
+}
+
+export default function WorkspaceOverviewPage() {
+  const queueCounts = conversations.reduce(
+    (counts, conversation) => {
+      counts[conversation.queue] += 1
+      return counts
+    },
+    { needs_review: 0, awaiting_approval: 0, follow_up: 0 }
+  )
 
   return (
-    <div className="space-y-10">
-      {/* 页面标题 */}
-      <div>
-        <Heading>仪表盘</Heading>
-        <p className="mt-2 text-sm/6 text-zinc-500 dark:text-zinc-400">
-          跟踪工作空间活动和性能指标
+    <div className="min-h-screen bg-white px-6 py-8 text-gray-700 sm:px-10">
+      <div className="flex flex-col gap-2">
+        <Heading level={1} className="text-3xl font-semibold text-gray-900">
+          Dashboard Overview
+        </Heading>
+        <p className="text-sm text-gray-600">
+          Snapshot of live support activity, review queues, and quick follow-up actions.
         </p>
       </div>
 
-      {/* 统计指标网格 */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {workspaceStats.map((stat) => (
-          <Stat key={stat.title} {...stat} />
+      <Divider className="my-6 border-gray-200" />
+
+      <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {overviewStats.map((stat) => (
+          <div key={stat.title} className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+            <Stat title={stat.title} value={stat.value} change={stat.change} description={stat.description} />
+          </div>
         ))}
-      </div>
+      </section>
 
-      {/* 2列布局: 最近对话 + 快速统计 */}
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        {/* 最近对话表格 */}
-        <div className="lg:col-span-2">
-          <Heading level={2}>最近对话</Heading>
-          <Divider className="mt-4" soft />
+      <section className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm lg:col-span-2">
+          <div className="flex items-center justify-between gap-3">
+            <div className="space-y-1">
+              <Heading level={2} className="text-xl font-semibold text-gray-900">
+                Recent conversations
+              </Heading>
+              <p className="text-sm text-gray-600">What customers are asking for right now.</p>
+            </div>
+            <Badge color="blue">Live feed</Badge>
+          </div>
 
-          <Table className="mt-4" striped>
-            <TableHead>
-              <TableRow>
-                <TableHeader>用户</TableHeader>
-                <TableHeader>主题</TableHeader>
-                <TableHeader>状态</TableHeader>
-                <TableHeader>时间</TableHeader>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {recentActivity.map((conversation) => (
-                <TableRow key={conversation.id} href={`/workspace/conversations?conversation=${conversation.id}`}>
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <Avatar
-                        src={conversation.user.avatar}
-                        initials={conversation.user.initials}
-                        className="size-8"
-                      />
-                      <span className="font-medium">{conversation.user.name}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="max-w-md truncate">{conversation.subject}</div>
-                    <div className="text-xs text-zinc-500 dark:text-zinc-400">{conversation.preview}</div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge color={getStatusBadge(conversation.status) as any}>
-                      {conversation.statusLabel}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-zinc-500">{conversation.timestamp}</TableCell>
+          <div className="mt-4">
+            <Table bleed>
+              <TableHead>
+                <TableRow>
+                  <TableHeader className="border-gray-200 text-gray-500">Customer</TableHeader>
+                  <TableHeader className="border-gray-200 text-gray-500">Subject</TableHeader>
+                  <TableHeader className="border-gray-200 text-gray-500">Status</TableHeader>
+                  <TableHeader className="border-gray-200 text-gray-500">Updated</TableHeader>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-
-        {/* 快速统计侧边栏 */}
-        <div>
-          <Heading level={2}>快速统计</Heading>
-          <Divider className="mt-4" soft />
-
-          <div className="mt-6 space-y-6">
-            <DescriptionList>
-              <DescriptionTerm>收件箱队列</DescriptionTerm>
-              <DescriptionDetails className="flex items-center gap-2">
-                <Badge color="amber">23 待处理</Badge>
-              </DescriptionDetails>
-
-              <DescriptionTerm>知识库文章</DescriptionTerm>
-              <DescriptionDetails className="flex items-center gap-2">
-                <Badge color="blue">5 审核中</Badge>
-              </DescriptionDetails>
-
-              <DescriptionTerm>AI 建议</DescriptionTerm>
-              <DescriptionDetails className="flex items-center gap-2">
-                <Badge color="green">7 新想法</Badge>
-              </DescriptionDetails>
-
-              <DescriptionTerm>活跃渠道</DescriptionTerm>
-              <DescriptionDetails>
-                <span className="font-medium text-zinc-950 dark:text-white">4 运行中</span>
-              </DescriptionDetails>
-
-              <DescriptionTerm>团队成员</DescriptionTerm>
-              <DescriptionDetails>
-                <span className="font-medium text-zinc-950 dark:text-white">6 活跃</span>
-              </DescriptionDetails>
-            </DescriptionList>
+              </TableHead>
+              <TableBody>
+                {conversations.map((conversation) => {
+                  const status = statusStyles[conversation.status]
+                  return (
+                    <TableRow key={conversation.id} className="align-top">
+                      <TableCell className="!border-gray-200">
+                        <div className="flex items-center gap-3">
+                          <Avatar
+                            src={conversation.user.avatar}
+                            initials={conversation.user.initials}
+                            alt={conversation.user.name}
+                            className="size-10"
+                          />
+                          <div className="flex flex-col">
+                            <span className="text-sm font-semibold text-gray-900">{conversation.user.name}</span>
+                            <span className="text-xs text-gray-500">{conversation.timestamp}</span>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="!border-gray-200">
+                        <div className="flex flex-col gap-1">
+                          <span className="text-sm font-medium text-gray-900">{conversation.subject}</span>
+                          <span className="text-xs text-gray-500">{conversation.preview}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="!border-gray-200">
+                        <div className="flex flex-col gap-2">
+                          <Badge color={status.color}>{status.label}</Badge>
+                          <span className="text-xs text-gray-500">Queue: {conversation.queue.replace('_', ' ')}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="!border-gray-200">
+                        <div className="flex flex-col items-start gap-1 text-xs text-gray-600">
+                          <span>{conversation.dateTime}</span>
+                          <span className="text-gray-500">Updated {conversation.timestamp}</span>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
           </div>
         </div>
-      </div>
+
+        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+          <Heading level={2} className="text-xl font-semibold text-gray-900">
+            Quick actions
+          </Heading>
+          <p className="mt-1 text-sm text-gray-600">Stay ahead of pending reviews and follow-ups.</p>
+
+          <div className="mt-4 space-y-3">
+            <button className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-left font-semibold text-gray-800 transition hover:border-gray-300 hover:bg-gray-100">
+              Triage {queueCounts.needs_review} conversation{queueCounts.needs_review === 1 ? '' : 's'} needing review
+            </button>
+            <button className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-left font-semibold text-gray-800 transition hover:border-gray-300 hover:bg-gray-100">
+              Approve {queueCounts.awaiting_approval} AI drafts
+            </button>
+            <button className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-left font-semibold text-gray-800 transition hover:border-gray-300 hover:bg-gray-100">
+              Schedule {queueCounts.follow_up} follow-ups
+            </button>
+          </div>
+
+          <Divider className="my-6 border-gray-200" />
+
+          <DescriptionList className="gap-y-2">
+            <DescriptionTerm className="border-gray-200 text-gray-500">Needs review</DescriptionTerm>
+            <DescriptionDetails className="border-gray-200 text-gray-700">
+              <div className="flex items-center justify-between">
+                <span>{queueDescriptions.needs_review}</span>
+                <Badge color="amber">{queueCounts.needs_review} open</Badge>
+              </div>
+            </DescriptionDetails>
+
+            <DescriptionTerm className="border-gray-200 text-gray-500">Awaiting approval</DescriptionTerm>
+            <DescriptionDetails className="border-gray-200 text-gray-700">
+              <div className="flex items-center justify-between">
+                <span>{queueDescriptions.awaiting_approval}</span>
+                <Badge color="blue">{queueCounts.awaiting_approval} queued</Badge>
+              </div>
+            </DescriptionDetails>
+
+            <DescriptionTerm className="border-gray-200 text-gray-500">Follow up</DescriptionTerm>
+            <DescriptionDetails className="border-gray-200 text-gray-700">
+              <div className="flex items-center justify-between">
+                <span>{queueDescriptions.follow_up}</span>
+                <Badge color="emerald">{queueCounts.follow_up} waiting</Badge>
+              </div>
+            </DescriptionDetails>
+          </DescriptionList>
+        </div>
+      </section>
     </div>
   )
 }
