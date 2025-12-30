@@ -38,7 +38,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname()
 
   return (
-    <SidebarLayout
+    <div className="workspace-light-mode" style={{ colorScheme: 'light' }}>
+      <SidebarLayout
       navbar={
         <Navbar>
           <NavbarSection className="max-lg:hidden">
@@ -85,5 +86,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     >
       {children}
     </SidebarLayout>
+    </div>
   )
 }

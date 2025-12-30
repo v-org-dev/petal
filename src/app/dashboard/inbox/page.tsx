@@ -7,6 +7,7 @@ import { Avatar } from '@/components/ui/catalyst/avatar'
 import { Badge } from '@/components/ui/catalyst/badge'
 import { Button } from '@/components/ui/catalyst/button'
 import { Divider } from '@/components/ui/catalyst/divider'
+import RightDrawer from '@/components/ui/catalyst/drawer'
 import { conversations, messageThreads } from '@/components/dashboard/mock-data'
 
 const queues = [
@@ -18,6 +19,7 @@ const queues = [
 export default function InboxPage() {
   const [activeQueue, setActiveQueue] = useState('needs_review')
   const [selectedConversation, setSelectedConversation] = useState(conversations[0])
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   const filteredConversations = conversations.filter(
     (conv) => conv.queue === activeQueue
@@ -48,7 +50,7 @@ export default function InboxPage() {
         </p>
       </div>
 
-      {/* 3-Column Layout */}
+      {/* 2-Column Layout */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         {/* Left Sidebar - Queue Filters */}
         <div className="lg:col-span-3 space-y-6">
@@ -98,7 +100,7 @@ export default function InboxPage() {
         </div>
 
         {/* Center - Conversations Table */}
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-9">
           <div className="flex items-center justify-between mb-4">
             <Subheading>
               {queues.find((q) => q.value === activeQueue)?.name}
@@ -115,7 +117,10 @@ export default function InboxPage() {
               {filteredConversations.map((conversation) => (
                 <TableRow
                   key={conversation.id}
-                  onClick={() => setSelectedConversation(conversation)}
+                  onClick={() => {
+                    setSelectedConversation(conversation)
+                    setDrawerOpen(true)
+                  }}
                   className={`cursor-pointer ${
                     selectedConversation.id === conversation.id
                       ? 'bg-zinc-950/5 dark:bg-white/5'
@@ -155,87 +160,87 @@ export default function InboxPage() {
             </TableBody>
           </Table>
         </div>
+      </div>
 
-        {/* Right Sidebar - Thread Preview */}
-        <div className="lg:col-span-4 space-y-6">
-          <div>
-            <Subheading>Thread Preview</Subheading>
-            <Divider className="mt-4" soft />
-          </div>
-
-          {selectedConversation && (
-            <div className="space-y-6">
-              {/* Conversation Header */}
-              <div className="flex items-start gap-3">
-                <Avatar
-                  src={selectedConversation.user.avatar}
-                  initials={selectedConversation.user.initials}
-                  className="size-12"
-                />
-                <div>
-                  <div className="font-semibold text-zinc-950 dark:text-white">
-                    {selectedConversation.user.name}
-                  </div>
-                  <div className="text-sm text-zinc-500 dark:text-zinc-400">
-                    {selectedConversation.subject}
-                  </div>
-                  <div className="mt-1">
-                    <Badge color={getStatusBadgeColor(selectedConversation.status) as any}>
-                      {selectedConversation.status.replace('_', ' ')}
-                    </Badge>
-                  </div>
+      {/* Right Drawer - Thread Preview */}
+      <RightDrawer
+        open={drawerOpen}
+        onClose={setDrawerOpen}
+        title="Thread Preview"
+        maxWidth="lg"
+      >
+        {selectedConversation && (
+          <div className="space-y-6">
+            {/* Conversation Header */}
+            <div className="flex items-start gap-3">
+              <Avatar
+                src={selectedConversation.user.avatar}
+                initials={selectedConversation.user.initials}
+                className="size-12"
+              />
+              <div>
+                <div className="font-semibold text-zinc-950 dark:text-white">
+                  {selectedConversation.user.name}
                 </div>
-              </div>
-
-              <Divider soft />
-
-              {/* Messages */}
-              <div className="space-y-4 max-h-96 overflow-y-auto">
-                {messages.length > 0 ? (
-                  messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={`rounded-lg p-3 ${
-                        message.sender === 'customer'
-                          ? 'bg-zinc-100 dark:bg-zinc-800'
-                          : 'bg-indigo-50 dark:bg-indigo-900/20'
-                      }`}
-                    >
-                      <div className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">
-                        {message.sender === 'customer' ? 'Customer' : 'Agent'} · {message.timestamp}
-                      </div>
-                      <div className="text-sm text-zinc-900 dark:text-zinc-100">
-                        {message.content}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-center py-8 text-sm text-zinc-500 dark:text-zinc-400">
-                    No messages in this conversation
-                  </div>
-                )}
-              </div>
-
-              <Divider soft />
-
-              {/* Quick Actions */}
-              <div className="space-y-2">
-                <Button color="indigo" className="w-full">
-                  Send Reply
-                </Button>
-                <div className="grid grid-cols-2 gap-2">
-                  <Button outline className="w-full">
-                    Approve Draft
-                  </Button>
-                  <Button outline className="w-full">
-                    Snooze
-                  </Button>
+                <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                  {selectedConversation.subject}
+                </div>
+                <div className="mt-1">
+                  <Badge color={getStatusBadgeColor(selectedConversation.status) as any}>
+                    {selectedConversation.status.replace('_', ' ')}
+                  </Badge>
                 </div>
               </div>
             </div>
-          )}
-        </div>
-      </div>
+
+            <Divider soft />
+
+            {/* Messages */}
+            <div className="space-y-4">
+              {messages.length > 0 ? (
+                messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`rounded-lg p-3 ${
+                      message.sender === 'customer'
+                        ? 'bg-zinc-100 dark:bg-zinc-800'
+                        : 'bg-indigo-50 dark:bg-indigo-900/20'
+                    }`}
+                  >
+                    <div className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">
+                      {message.sender === 'customer' ? 'Customer' : 'Agent'} · {message.timestamp}
+                    </div>
+                    <div className="text-sm text-zinc-900 dark:text-zinc-100">
+                      {message.content}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-8 text-sm text-zinc-500 dark:text-zinc-400">
+                  No messages in this conversation
+                </div>
+              )}
+            </div>
+
+            <Divider soft />
+
+            {/* Quick Actions */}
+            <div className="space-y-2">
+              <Button color="indigo" className="w-full">
+                Send Reply
+              </Button>
+              <div className="grid grid-cols-2 gap-2">
+                <Button outline className="w-full">
+                  Approve Draft
+                </Button>
+                <Button outline className="w-full">
+                  Snooze
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </RightDrawer>
     </div>
   )
 }

@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/catalyst/button'
 import { Divider } from '@/components/ui/catalyst/divider'
 import { DescriptionDetails, DescriptionList, DescriptionTerm } from '@/components/ui/catalyst/description-list'
 import { Pagination, PaginationList, PaginationNext, PaginationPage, PaginationPrevious } from '@/components/ui/catalyst/pagination'
+import RightDrawer from '@/components/ui/catalyst/drawer'
 import { articles } from '@/components/dashboard/mock-data'
 
 const tabs = [
@@ -21,6 +22,8 @@ const tabs = [
 export default function KnowledgeBasePage() {
   const [activeTab, setActiveTab] = useState('articles')
   const [selectedArticle, setSelectedArticle] = useState(articles[0])
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [uploadDrawerOpen, setUploadDrawerOpen] = useState(false)
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
@@ -45,7 +48,9 @@ export default function KnowledgeBasePage() {
             Manage your knowledge base articles and content
           </p>
         </div>
-        <Button color="indigo">Upload Content</Button>
+        <Button color="indigo" onClick={() => setUploadDrawerOpen(true)}>
+          Upload Content
+        </Button>
       </div>
 
       {/* Secondary Tab Navigation */}
@@ -69,9 +74,9 @@ export default function KnowledgeBasePage() {
 
       {/* Tab Content */}
       {activeTab === 'articles' && (
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <div>
           {/* Articles Table */}
-          <div className="lg:col-span-2">
+          <div>
             <Table striped>
               <TableHead>
                 <TableRow>
@@ -85,7 +90,10 @@ export default function KnowledgeBasePage() {
                 {articles.map((article) => (
                   <TableRow
                     key={article.id}
-                    onClick={() => setSelectedArticle(article)}
+                    onClick={() => {
+                      setSelectedArticle(article)
+                      setDrawerOpen(true)
+                    }}
                     className="cursor-pointer"
                   >
                     <TableCell className="font-medium">
@@ -125,13 +133,13 @@ export default function KnowledgeBasePage() {
             </Pagination>
           </div>
 
-          {/* Article Preview Sidebar */}
-          <div className="space-y-6">
-            <div>
-              <Heading level={2}>Article Preview</Heading>
-              <Divider className="mt-4" soft />
-            </div>
-
+          {/* Article Preview Drawer */}
+          <RightDrawer
+            open={drawerOpen}
+            onClose={setDrawerOpen}
+            title="Article Preview"
+            maxWidth="lg"
+          >
             {selectedArticle && (
               <div className="space-y-6">
                 <div>
@@ -194,7 +202,7 @@ export default function KnowledgeBasePage() {
                 </div>
               </div>
             )}
-          </div>
+          </RightDrawer>
         </div>
       )}
 
@@ -206,6 +214,58 @@ export default function KnowledgeBasePage() {
           </p>
         </div>
       )}
+
+      {/* Upload Content Drawer */}
+      <RightDrawer
+        open={uploadDrawerOpen}
+        onClose={setUploadDrawerOpen}
+        title="Upload Content"
+        maxWidth="md"
+      >
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-zinc-950 dark:text-white mb-2">
+              Title
+            </label>
+            <input
+              type="text"
+              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+              placeholder="Enter article title"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-zinc-950 dark:text-white mb-2">
+              Category
+            </label>
+            <input
+              type="text"
+              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+              placeholder="e.g., Getting Started, Billing"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-zinc-950 dark:text-white mb-2">
+              Content
+            </label>
+            <textarea
+              rows={8}
+              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+              placeholder="Write your article content..."
+            />
+          </div>
+
+          <div className="flex gap-2 pt-4">
+            <Button outline className="flex-1" onClick={() => setUploadDrawerOpen(false)}>
+              Cancel
+            </Button>
+            <Button color="indigo" className="flex-1">
+              Upload
+            </Button>
+          </div>
+        </div>
+      </RightDrawer>
     </div>
   )
 }

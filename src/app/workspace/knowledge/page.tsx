@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Avatar } from '@/components/ui/catalyst/avatar'
 import { Badge } from '@/components/ui/catalyst/badge'
 import { DescriptionDetails, DescriptionList, DescriptionTerm } from '@/components/ui/catalyst/description-list'
+import RightDrawer from '@/components/ui/catalyst/drawer'
 import { articles } from '@/components/workspace/mock-data'
 
 type TabId = 'overview' | 'sources' | 'articles' | 'review'
@@ -15,6 +16,8 @@ type TabId = 'overview' | 'sources' | 'articles' | 'review'
 export default function KnowledgePage() {
   const [activeTab, setActiveTab] = useState<TabId>('articles')
   const [selectedArticleId, setSelectedArticleId] = useState<number | null>(articles[0]?.id || null)
+  const [previewDrawerOpen, setPreviewDrawerOpen] = useState(false)
+  const [uploadDrawerOpen, setUploadDrawerOpen] = useState(false)
 
   const tabs = [
     { id: 'overview' as TabId, name: '概览' },
@@ -48,7 +51,9 @@ export default function KnowledgePage() {
             管理 AI 代理使用的知识和文档
           </p>
         </div>
-        <Button color="indigo">上传内容</Button>
+        <Button color="indigo" onClick={() => setUploadDrawerOpen(true)}>
+          上传内容
+        </Button>
       </div>
 
       {/* Tab 导航 */}
@@ -72,9 +77,9 @@ export default function KnowledgePage() {
 
       {/* Tab 内容 */}
       {activeTab === 'articles' && (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {/* 文章列表 (左侧 2/3) */}
-          <div className="lg:col-span-2">
+        <div>
+          {/* 文章列表 */}
+          <div>
             <Table striped>
               <TableHead>
                 <TableRow>
@@ -88,7 +93,10 @@ export default function KnowledgePage() {
                 {articles.map((article) => (
                   <TableRow
                     key={article.id}
-                    onClick={() => setSelectedArticleId(article.id)}
+                    onClick={() => {
+                      setSelectedArticleId(article.id)
+                      setPreviewDrawerOpen(true)
+                    }}
                     className={`cursor-pointer ${
                       selectedArticleId === article.id ? 'bg-zinc-950/5 dark:bg-white/5' : ''
                     }`}
@@ -131,10 +139,15 @@ export default function KnowledgePage() {
             </div>
           </div>
 
-          {/* 文章预览 (右侧 1/3) */}
-          <div>
-            {selectedArticle ? (
-              <div className="rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+          {/* 文章预览 Drawer */}
+          <RightDrawer
+            open={previewDrawerOpen}
+            onClose={setPreviewDrawerOpen}
+            title="文章详情"
+            maxWidth="lg"
+          >
+            {selectedArticle && (
+              <div className="space-y-6">
                 <div className="flex items-start justify-between">
                   <h3 className="text-base font-semibold text-zinc-950 dark:text-white">
                     {selectedArticle.title}
@@ -144,11 +157,11 @@ export default function KnowledgePage() {
                   </Badge>
                 </div>
 
-                <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+                <p className="text-sm text-zinc-500 dark:text-zinc-400">
                   {selectedArticle.category}
                 </p>
 
-                <Divider className="my-4" soft />
+                <Divider soft />
 
                 <DescriptionList>
                   <DescriptionTerm>状态</DescriptionTerm>
@@ -182,7 +195,7 @@ export default function KnowledgePage() {
                   </DescriptionDetails>
                 </DescriptionList>
 
-                <Divider className="my-4" soft />
+                <Divider soft />
 
                 <div className="space-y-3">
                   <h4 className="text-sm font-semibold text-zinc-950 dark:text-white">内容预览</h4>
@@ -192,7 +205,7 @@ export default function KnowledgePage() {
                   </p>
                 </div>
 
-                <Divider className="my-4" soft />
+                <Divider soft />
 
                 <div className="flex gap-2">
                   <Button color="indigo" className="flex-1">
@@ -205,14 +218,8 @@ export default function KnowledgePage() {
                   )}
                 </div>
               </div>
-            ) : (
-              <div className="rounded-lg border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900">
-                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  请选择一篇文章以查看详情
-                </p>
-              </div>
             )}
-          </div>
+          </RightDrawer>
         </div>
       )}
 
@@ -233,6 +240,58 @@ export default function KnowledgePage() {
           <p className="text-sm text-zinc-500 dark:text-zinc-400">待审核页面即将推出</p>
         </div>
       )}
+
+      {/* 上传内容 Drawer */}
+      <RightDrawer
+        open={uploadDrawerOpen}
+        onClose={setUploadDrawerOpen}
+        title="上传内容"
+        maxWidth="md"
+      >
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-zinc-950 dark:text-white mb-2">
+              标题
+            </label>
+            <input
+              type="text"
+              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+              placeholder="输入文章标题"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-zinc-950 dark:text-white mb-2">
+              分类
+            </label>
+            <input
+              type="text"
+              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+              placeholder="例如：入门指南、计费说明"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-zinc-950 dark:text-white mb-2">
+              内容
+            </label>
+            <textarea
+              rows={8}
+              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+              placeholder="编写文章内容..."
+            />
+          </div>
+
+          <div className="flex gap-2 pt-4">
+            <Button outline className="flex-1" onClick={() => setUploadDrawerOpen(false)}>
+              取消
+            </Button>
+            <Button color="indigo" className="flex-1">
+              上传
+            </Button>
+          </div>
+        </div>
+      </RightDrawer>
     </div>
   )
 }

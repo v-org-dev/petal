@@ -10,6 +10,7 @@ import { Field, Fieldset, Label, Legend } from '@/components/ui/catalyst/fieldse
 import { Button } from '@/components/ui/catalyst/button'
 import { Badge } from '@/components/ui/catalyst/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/catalyst/table'
+import RightDrawer from '@/components/ui/catalyst/drawer'
 import { workspaceSettings } from '@/components/dashboard/mock-data'
 
 const tabs = [
@@ -21,6 +22,7 @@ const tabs = [
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('general')
+  const [createKeyDrawerOpen, setCreateKeyDrawerOpen] = useState(false)
 
   return (
     <div className="space-y-10">
@@ -200,7 +202,9 @@ export default function SettingsPage() {
                 Manage API keys for programmatic access
               </p>
             </div>
-            <Button color="indigo">Create New Key</Button>
+            <Button color="indigo" onClick={() => setCreateKeyDrawerOpen(true)}>
+              Create New Key
+            </Button>
           </div>
 
           <Divider soft />
@@ -235,6 +239,67 @@ export default function SettingsPage() {
           </Table>
         </div>
       )}
+
+      {/* Create New Key Drawer */}
+      <RightDrawer
+        open={createKeyDrawerOpen}
+        onClose={setCreateKeyDrawerOpen}
+        title="Create New API Key"
+        maxWidth="md"
+      >
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-zinc-950 dark:text-white mb-2">
+              Key Name
+            </label>
+            <input
+              type="text"
+              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+              placeholder="My API Key"
+            />
+            <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
+              A descriptive name to help you identify this key
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-zinc-950 dark:text-white mb-2">
+              Permissions
+            </label>
+            <select className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800 dark:text-white">
+              <option>Read Only</option>
+              <option>Read & Write</option>
+              <option>Full Access</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-zinc-950 dark:text-white mb-2">
+              Description (optional)
+            </label>
+            <textarea
+              rows={4}
+              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+              placeholder="Describe what this key will be used for..."
+            />
+          </div>
+
+          <div className="rounded-md bg-amber-50 p-4 dark:bg-amber-900/20">
+            <p className="text-sm text-amber-800 dark:text-amber-200">
+              <strong>Note:</strong> The API key will only be shown once. Make sure to copy it and store it securely.
+            </p>
+          </div>
+
+          <div className="flex gap-2 pt-4">
+            <Button outline className="flex-1" onClick={() => setCreateKeyDrawerOpen(false)}>
+              Cancel
+            </Button>
+            <Button color="indigo" className="flex-1">
+              Create Key
+            </Button>
+          </div>
+        </div>
+      </RightDrawer>
     </div>
   )
 }
