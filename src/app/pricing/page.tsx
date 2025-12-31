@@ -256,7 +256,7 @@ export default function Page() {
           {
             title: 'Analytics & Insights',
             features: [
-              { name: 'Basic dashboard', value: true },
+              { name: 'Basic reporting', value: true },
               {
                 name: 'Advanced analytics',
                 value: { Starter: false, Growth: true, Scale: true },

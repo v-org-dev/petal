@@ -563,7 +563,7 @@ export default function Page() {
         <Faq
           id="faq-2"
           question="How does the self-evolving knowledge base actually work?"
-          answer="Every night, Petal analyzes all conversations from the past 24 hours using AI. It detects: (1) Questions where confidence was <70% (knowledge gaps), (2) Similar questions asked 3+ times (missing articles), (3) Articles with negative feedback (need updates), and (4) Outdated information. Then GPT-4 generates specific suggestions: draft articles for new topics, edits for existing content, or deprecation recommendations. You review a dashboard weekly, approve/reject in one click, and approved changes go live immediately. Customers report 60% approval rates and 10+ improvements per week on average."
+          answer="Every night, Petal analyzes all conversations from the past 24 hours using AI. It detects: (1) Questions where confidence was <70% (knowledge gaps), (2) Similar questions asked 3+ times (missing articles), (3) Articles with negative feedback (need updates), and (4) Outdated information. Then GPT-4 generates specific suggestions: draft articles for new topics, edits for existing content, or deprecation recommendations. You review a weekly summary, approve/reject in one click, and approved changes go live immediately. Customers report 60% approval rates and 10+ improvements per week on average."
         />
         <Faq
           id="faq-3"
@@ -626,7 +626,7 @@ export default function Page() {
                 'Up to 2,000 conversations/month',
                 'All channels: Web + Email + WhatsApp',
                 'Self-evolving knowledge base ⭐',
-                'Advanced analytics dashboard',
+                'Advanced analytics reporting',
                 'Facebook Messenger integration',
                 'Priority email support',
               ]}

@@ -30,8 +30,4 @@
     }
   }
 
-  /* 强制 workspace 区域使用亮色主题 */
-  .workspace-light-mode {
-    color-scheme: light only;
-  }
 }

@@ -41,7 +41,7 @@ export function SignupForm() {
         setLoading(false)
       } else {
         // Auto sign-in (if email confirmation is disabled)
-        router.push('/dashboard')
+        router.push('/')
         router.refresh()
       }
     }
