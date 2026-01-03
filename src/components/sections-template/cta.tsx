@@ -3,6 +3,7 @@ import Section from "@/components/section";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function CtaSection() {
   return (
@@ -20,8 +21,8 @@ export default function CtaSection() {
             "w-full sm:w-auto text-background flex gap-2"
           )}
         >
-          <Icons.logo className="h-6 w-6" />
           Get started for free
+          <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
     </Section>
