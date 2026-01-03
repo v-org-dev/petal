@@ -1,3 +1,4 @@
+import BlogSection from '@/components/sections-template/blog'
 import CTA from '@/components/sections-template/cta'
 import FAQ from '@/components/sections-template/faq'
 import Features from '@/components/sections-template/features'
@@ -21,6 +22,7 @@ export default function Home() {
       {/* <Testimonials /> */}
       <Pricing />
       <FAQ />
+      <BlogSection />
       <CTA />
     </main>
   )
