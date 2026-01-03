@@ -89,9 +89,9 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/women/44.jpg",
     description: (
       <p>
-        We were spending 12 hours every week just updating our FAQ docs. With Petal's self-evolving knowledge base,
-        <Highlight>it's down to 10 minutes of reviewing AI suggestions.</Highlight>
-        Our team finally has time to focus on complex customer issues instead of repetitive documentation.
+        We were spending 12 hours weekly updating FAQs. With Petal's self-evolving knowledge base,{" "}
+        <Highlight>it's now just 10 minutes to review AI suggestions.</Highlight>{" "}
+        Our team finally focuses on complex customer issues instead of repetitive docs.
       </p>
     ),
   },
@@ -101,9 +101,8 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/men/32.jpg",
     description: (
       <p>
-        The RAG-powered accuracy is what sold us. DevBot doesn't make things up—it only answers from our actual docs.
-        <Highlight>Customer trust went up because responses always cite their sources.</Highlight>
-        No more worrying about AI giving wrong product information.
+        The RAG-powered accuracy sold us. Petal only answers from our actual docs—never guesses.{" "}
+        <Highlight>Customer trust went up because sources are always cited.</Highlight>
       </p>
     ),
   },
@@ -113,9 +112,8 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/women/22.jpg",
     description: (
       <p>
-        We upgraded to Growth specifically for the self-evolving knowledge base. Within 4 weeks, Petal suggested 23 articles—we approved 19.
+        We upgraded for the self-evolving knowledge base. Within 4 weeks, Petal suggested 23 articles—we approved 19.{" "}
         <Highlight>AI resolution rate jumped from 35% to 48%.</Highlight>
-        The $200/month upgrade pays for itself in saved agent hours.
       </p>
     ),
   },
@@ -125,9 +123,8 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/men/67.jpg",
     description: (
       <p>
-        The A2UI guided flows are brilliant. Instead of just text, customers get 'Track Order' and 'Start Return' buttons right in the chat.
-        <Highlight>Reduced average resolution time by 40%.</Highlight>
-        It's like having a mini-app inside every conversation.
+        The guided flows are brilliant. Instead of text, customers get 'Track Order' and 'Start Return' buttons right in chat.{" "}
+        <Highlight>Resolution time dropped 40%.</Highlight>
       </p>
     ),
   },
@@ -137,9 +134,8 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/women/65.jpg",
     description: (
       <p>
-        Before Petal, we had 200+ support tickets daily. Now DevBot handles the simple stuff automatically.
-        <Highlight>Our team went from 5 agents to 2, saving $8,000/month in payroll.</Highlight>
-        The remaining agents focus on upselling and complex issues.
+        Before Petal, 200+ tickets daily. Now simple questions are automated.{" "}
+        <Highlight>Team went from 5 agents to 2, saving $8,000/month.</Highlight>
       </p>
     ),
   },
@@ -149,9 +145,8 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/men/12.jpg",
     description: (
       <p>
-        Setup took 15 minutes. We uploaded our Shopify FAQs and product catalog, and DevBot was answering customers same day.
+        Setup took 15 minutes. Uploaded FAQs and product catalog, and Petal answered customers same day.{" "}
         <Highlight>No technical skills needed—our non-tech team runs it.</Highlight>
-        Finally, AI that actually works out of the box.
       </p>
     ),
   },
@@ -161,9 +156,8 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/women/33.jpg",
     description: (
       <p>
-        The knowledge gap analytics are eye-opening. We discovered customers asking about fabric care 50+ times with no good answer in our KB.
-        <Highlight>DevBot drafted the article overnight. We approved it in 2 minutes.</Highlight>
-        Now that question is automated.
+        Knowledge gap analytics are eye-opening. Customers asked about fabric care 50+ times with no answer.{" "}
+        <Highlight>Petal drafted the article overnight. Approved in 2 minutes.</Highlight>
       </p>
     ),
   },
@@ -173,9 +167,8 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/men/78.jpg",
     description: (
       <p>
-        We're a small team (3 people). Before Petal, customer service ate 60% of our time. Now it's maybe 10%.
-        <Highlight>DevBot handles 65% of inquiries completely automatically.</Highlight>
-        We finally have time to work ON the business instead of IN it.
+        Small team (3 people). Before Petal, CS ate 60% of our time. Now maybe 10%.{" "}
+        <Highlight>Petal handles 65% of inquiries automatically.</Highlight>
       </p>
     ),
   },
@@ -185,9 +178,8 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/women/89.jpg",
     description: (
       <p>
-        The smart escalation is perfect. When DevBot confidence drops below 70% or detects frustration, it hands off to us with full context.
-        <Highlight>Our CSAT score went from 4.1 to 4.7 stars.</Highlight>
-        Customers love fast AI answers for simple stuff, and human touch for complex issues.
+        Smart escalation works perfectly. When confidence drops or frustration is detected, it hands off to humans with full context.{" "}
+        <Highlight>CSAT rose from 4.1 to 4.7 stars.</Highlight>
       </p>
     ),
   },
@@ -197,7 +189,7 @@ export default function Testimonials() {
   return (
     <Section
       title="Real Results from Real E-Commerce Teams"
-      subtitle="These stores went from drowning in support tickets to scaling effortlessly"
+      subtitle="Less work. Better support. Proven results."
       className="max-w-8xl"
     >
       <div className="relative mt-6 max-h-screen overflow-hidden">

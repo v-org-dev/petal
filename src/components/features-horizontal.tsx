@@ -187,7 +187,7 @@ export default function Features({
               }`}
             >
               <Accordion.Root
-                className="grid md:grid-cols-4 gap-x-10 py-8"
+                className="grid md:grid-cols-3 gap-x-10 py-8 mx-auto justify-center"
                 type="single"
                 defaultValue={`item-${currentIndex}`}
                 value={`item-${currentIndex}`}

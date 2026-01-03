@@ -23,7 +23,7 @@ function HeroPill() {
         ✨ New
       </div>
       <p className="text-xs font-medium text-primary sm:text-sm">
-        AI Knowledge Base That Evolves Itself
+        Accurate answers. Guided replies. Self-improving knowledge.
       </p>
       <svg
         width="12"
@@ -55,7 +55,7 @@ function HeroTitles() {
           staggerChildren: 0.2,
         }}
       >
-        {["The", "only", "customer", "service", "with", "a", "knowledge", "base", "that", "improves", "itself"].map((text, index) => (
+        {["AI", "that", "answers", "and", "guides", "your", "customer"].map((text, index) => (
           <motion.span
             key={index}
             className="inline-block px-1 md:px-2 text-balance font-semibold"
@@ -81,7 +81,7 @@ function HeroTitles() {
           ease,
         }}
       >
-        DevBot answers customer questions using RAG-powered AI, then automatically detects knowledge gaps and suggests improvements—reducing manual work from 10 hours/week to 5 minutes.
+        Answers from your docs, guides users with UI actions, and improves itself automatically.
       </motion.p>
     </div>
   );
@@ -104,7 +104,7 @@ function HeroCTA() {
           )}
         >
           <Icons.logo className="h-6 w-6" />
-          Start free 14-day trial
+          Start free trial
         </Link>
       </motion.div>
       <motion.p
@@ -113,7 +113,7 @@ function HeroCTA() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.0, duration: 0.8 }}
       >
-        14 day free trial. No credit card required.
+        No credit card required.
       </motion.p>
     </>
   );

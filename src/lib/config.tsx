@@ -7,7 +7,7 @@ export const BLUR_FADE_DELAY = 0.15
 
 export const siteConfig = {
   name: 'Petal',
-  description: 'AI Customer Service for E-commerce with Self-Evolving Knowledge Base',
+  description: 'AI customer support with self-evolving knowledge base, RAG-powered accuracy, and guided A2UI replies',
   url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
   keywords: [
     'AI customer service',
@@ -15,7 +15,6 @@ export const siteConfig = {
     'self-evolving knowledge base',
     'RAG-powered AI',
     'A2UI technology',
-    'DevBot',
   ],
   links: {
     email: 'support@petal.ai',
@@ -45,14 +44,14 @@ export const siteConfig = {
       period: 'month',
       yearlyPrice: '$82',
       features: [
-        'Up to 500 conversations/month',
-        'Self-evolving knowledge base',
-        'RAG-powered AI responses',
+        '500 conv/month',
+        'Self-evolving KB',
+        'RAG-powered AI',
         'A2UI guided replies',
         'Email support',
         'Basic analytics',
       ],
-      description: 'Perfect for growing e-commerce stores',
+      description: 'For small stores',
       buttonText: 'Start Free Trial',
       isPopular: false,
     },
@@ -63,16 +62,16 @@ export const siteConfig = {
       period: 'month',
       yearlyPrice: '$249',
       features: [
-        'Up to 2,000 conversations/month',
-        'Self-evolving knowledge base',
-        'RAG-powered AI responses',
+        '2,000 conv/month',
+        'Self-evolving KB',
+        'RAG-powered AI',
         'A2UI guided replies',
         'Priority support',
         'Advanced analytics',
-        'Multi-channel support',
+        'Multi-channel',
         'Custom integrations',
       ],
-      description: 'Ideal for scaling e-commerce businesses',
+      description: 'For scaling businesses',
       buttonText: 'Start Free Trial',
       isPopular: true,
     },
@@ -83,18 +82,18 @@ export const siteConfig = {
       period: 'month',
       yearlyPrice: '$499',
       features: [
-        'Up to 5,000 conversations/month',
-        'Self-evolving knowledge base',
-        'RAG-powered AI responses',
+        '5,000 conv/month',
+        'Self-evolving KB',
+        'RAG-powered AI',
         'A2UI guided replies',
-        'Dedicated support manager',
+        'Dedicated manager',
         'Enterprise analytics',
-        'Multi-channel support',
+        'Multi-channel',
         'Custom integrations',
-        'White-label options',
+        'White-label',
         'SLA guarantees',
       ],
-      description: 'For high-volume e-commerce operations',
+      description: 'For high-volume ops',
       buttonText: 'Contact Sales',
       isPopular: false,
     },
@@ -114,10 +113,8 @@ export const siteConfig = {
       question: 'How does the self-evolving knowledge base work?',
       answer: (
         <span>
-          Every night, Petal analyzes all conversations from the day. It identifies: (1) questions the AI couldn&apos;t
-          answer confidently, (2) outdated information in your knowledge base, and (3) patterns in customer inquiries.
-          Then it generates suggested FAQ updates or new articles. You review and approve in minutes instead of spending
-          hours manually updating docs.
+          Petal analyzes all daily conversations, detects unanswered questions, outdated info, and trends. It generates
+          suggested FAQs or updates, and you approve in minutes—not hours.
         </span>
       ),
     },
@@ -125,9 +122,17 @@ export const siteConfig = {
       question: 'What is RAG and why does it matter?',
       answer: (
         <span>
-          RAG (Retrieval-Augmented Generation) means Petal pulls information from your actual knowledge base before
-          responding—it doesn&apos;t hallucinate or make things up like ChatGPT might. Every answer includes source
-          attribution, showing which FAQ or doc it referenced. This ensures accuracy and builds customer trust.
+          RAG (Retrieval-Augmented Generation) ensures Petal only answers from your actual knowledge base. No hallucinations.
+          Every answer cites its source, keeping responses accurate and trustworthy.
+        </span>
+      ),
+    },
+    {
+      question: 'How does A2UI help customers?',
+      answer: (
+        <span>
+          A2UI embeds interactive buttons and guided flows in chat—like &apos;Track Order&apos; or &apos;Start Return&apos;—so
+          customers can act without leaving the conversation.
         </span>
       ),
     },
@@ -152,13 +157,11 @@ export const siteConfig = {
       ),
     },
     {
-      question: 'Can Petal replace my entire support team?',
+      question: 'Can Petal replace my team?',
       answer: (
         <span>
-          Not entirely—and you probably don&apos;t want it to. Petal typically handles 40-60% of incoming support
-          inquiries automatically, freeing your team to focus on complex issues, upselling, and building customer
-          relationships. When Petal&apos;s confidence score drops below 70% or sentiment turns negative, it seamlessly
-          hands off to a human with full conversation context.
+          Petal handles 40-60% of inquiries automatically. Complex issues or negative sentiment are escalated to humans
+          with full context, letting your team focus on high-value work.
         </span>
       ),
     },

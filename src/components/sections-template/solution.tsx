@@ -9,9 +9,9 @@ import { motion } from "framer-motion";
 
 const features = [
   {
-    title: "Your Knowledge Base Maintains Itself",
+    title: "A knowledge base that maintains itself",
     description:
-      "Stop spending 10 hours/week updating FAQs. DevBot analyzes every conversation, spots gaps, and drafts new articles for you. Review and approve in 5 minutes.",
+      "Finds missing and outdated answers from real conversations and drafts updates automatically.",
     className: "hover:bg-primary/5 transition-all duration-500 ease-out",
     content: (
       <>
@@ -24,9 +24,9 @@ const features = [
     ),
   },
   {
-    title: "No More AI Hallucinations",
+    title: "Answers from your knowledge only",
     description:
-      "Unlike ChatGPT-style bots, DevBot uses RAG (Retrieval-Augmented Generation). It only answers from YOUR knowledge base—never makes things up. Every response cites its source.",
+      "Every reply is grounded in your docs — no guessing, no hallucinations.",
     className:
       "order-3 xl:order-none hover:bg-primary/5 transition-all duration-500 ease-out",
     content: (
@@ -38,9 +38,9 @@ const features = [
     ),
   },
   {
-    title: "Guided Actions, Not Just Text",
+    title: "Guided actions, not chat messages",
     description:
-      "DevBot doesn't just reply with words. Our A2UI technology embeds clickable buttons and guided flows—like 'Track Order', 'Start Return', 'View Product'—right in the conversation.",
+      "Buttons and step-by-step flows replace long text replies.",
     className:
       "md:row-span-2 hover:bg-primary/5 transition-all duration-500 ease-out",
     content: (
@@ -64,9 +64,9 @@ const features = [
     ),
   },
   {
-    title: "Humans Handle What Matters",
+    title: "Humans step in when it matters",
     description:
-      "When DevBot's confidence drops below 70% or detects frustration, it instantly escalates to your team—with full context. Your agents focus on complex issues, not repetitive questions.",
+      "Low confidence or frustration triggers instant handoff with full context.",
     className:
       "flex-row order-4 md:col-span-2 md:flex-row xl:order-none hover:bg-primary/5 transition-all duration-500 ease-out",
     content: (
@@ -85,9 +85,9 @@ const features = [
 export default function Component() {
   return (
     <Section
-      title="The Solution"
-      subtitle="AI That Actually Reduces Work Instead of Creating It"
-      description="Three breakthroughs in one platform: Self-evolving knowledge base + RAG-powered accuracy + A2UI guided experiences. Your support team finally gets time back."
+      title="How Petal fixes it"
+      subtitle="Support that finally gets better, not busier"
+      description="Accurate answers, guided actions, and a knowledge base that improves itself."
       className="bg-neutral-100 dark:bg-neutral-900"
     >
       <div className="mx-auto mt-16 grid max-w-sm grid-cols-1 gap-6 text-gray-500 md:max-w-3xl md:grid-cols-2 xl:grid-rows-2 md:grid-rows-3 xl:max-w-6xl xl:auto-rows-fr xl:grid-cols-3">

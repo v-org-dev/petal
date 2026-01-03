@@ -5,33 +5,33 @@ import { Upload, MessageSquare, BrainCog, ThumbsUp } from "lucide-react";
 const data = [
   {
     id: 1,
-    title: "1. Import Your Existing Content (10 Minutes)",
+    title: "1. Import your content (10 minutes)",
     content:
-      "Upload your current FAQs, help docs, or product info. Connect to Shopify/WooCommerce for order data access. DevBot learns your brand voice and product catalog instantly.",
+      "Upload FAQs, help docs, or product info. Connect Shopify/WooCommerce. Petal learns your brand voice instantly.",
     image: "/dashboard.png",
     icon: <Upload className="w-6 h-6 text-primary" />,
   },
   {
     id: 2,
-    title: "2. DevBot Starts Answering Customers",
+    title: "2. AI starts answering",
     content:
-      "Customers ask questions via web chat, email, or WhatsApp. DevBot uses RAG to find accurate answers from your knowledge base, adds A2UI guided actions, and responds in seconds. No training required.",
+      "Customers ask via web chat, email, or WhatsApp. Petal finds accurate answers from your knowledge base and guides users with interactive actions — no training needed.",
     image: "/dashboard.png",
     icon: <MessageSquare className="w-6 h-6 text-primary" />,
   },
   {
     id: 3,
-    title: "3. AI Analyzes Every Night",
+    title: "3. AI reviews every conversation",
     content:
-      "While you sleep, DevBot reviews all conversations from the day. It identifies questions it couldn't answer confidently, spots outdated information, and detects trending customer needs.",
+      "Petal analyzes unanswered or weak questions, outdated info, and trending customer needs — while you sleep.",
     image: "/dashboard.png",
     icon: <BrainCog className="w-6 h-6 text-primary" />,
   },
   {
     id: 4,
-    title: "4. You Approve Improvements (5 Minutes/Week)",
+    title: "4. Approve improvements (5 min/week)",
     content:
-      "Each morning, check your dashboard for AI-generated suggestions: new FAQ drafts, article updates, and gap analyses. Click approve on what looks good. Your knowledge base evolves automatically.",
+      "Review suggested FAQ updates, new articles, and gap fixes. Approve what's right — your knowledge base evolves automatically.",
     image: "/dashboard.png",
     icon: <ThumbsUp className="w-6 h-6 text-primary" />,
   },
@@ -40,8 +40,8 @@ const data = [
 export default function Component() {
   return (
     <Section
-      title="How DevBot Works"
-      subtitle="Set up in 10 minutes. See results in 24 hours. Keep improving forever."
+      title="How Petal works"
+      subtitle="10-min setup. 24-hour results. Auto-improving."
     >
       <Features data={data} />
     </Section>

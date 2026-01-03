@@ -7,8 +7,7 @@ import Logos from '@/components/sections-template/logos'
 import Pricing from '@/components/sections-template/pricing'
 import Problem from '@/components/sections-template/problem'
 import Solution from '@/components/sections-template/solution'
-import Testimonials from '@/components/sections-template/testimonials'
-import TestimonialsCarousel from '@/components/sections-template/testimonials-carousel'
+// import Testimonials from '@/components/sections-template/testimonials'
 
 export default function Home() {
   return (
@@ -18,9 +17,8 @@ export default function Home() {
       <Problem />
       <Solution />
       <HowItWorks />
-      <TestimonialsCarousel />
       <Features />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Pricing />
       <FAQ />
       <CTA />

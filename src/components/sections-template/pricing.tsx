@@ -22,7 +22,7 @@ export default function PricingSection() {
   };
 
   return (
-    <Section title="Pricing" subtitle="Choose the plan that's right for you">
+    <Section title="Pricing" subtitle="Save time. Support better.">
       <div className="flex justify-center mb-10">
         <span className="mr-2 font-semibold">Monthly</span>
         <label className="relative inline-flex items-center cursor-pointer">
@@ -98,7 +98,7 @@ export default function PricingSection() {
               </p>
 
               <p className="text-xs leading-5 text-muted-foreground">
-                {isMonthly ? "billed monthly" : "billed annually"}
+                {isMonthly ? "billed monthly" : "billed annually (2 months free)"}
               </p>
 
               <ul className="mt-5 gap-2 flex flex-col">

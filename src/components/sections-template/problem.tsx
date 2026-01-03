@@ -5,27 +5,27 @@ import { Clock, MessageSquareWarning, FileX, AlertCircle } from "lucide-react";
 
 const problems = [
   {
-    title: "Manual Knowledge Base Hell",
+    title: "Manual knowledge base maintenance",
     description:
-      "E-commerce teams spend 10+ hours every week manually updating FAQs, writing new articles, and fixing outdated information. It's exhausting and never-ending.",
+      "Teams spend hours updating FAQs and docs, and they're still outdated the next week.",
     icon: Clock,
   },
   {
-    title: "AI Chatbots That Hallucinate",
+    title: "AI that guesses instead of answers",
     description:
-      "Most AI chatbots make up answers without RAG (Retrieval-Augmented Generation), damaging customer trust and creating more support tickets instead of solving them.",
+      "Chatbots give confident but wrong replies, creating more tickets and less trust.",
     icon: MessageSquareWarning,
   },
   {
-    title: "Knowledge Bases Never Improve",
+    title: "No guidance, just chat",
     description:
-      "Your knowledge base gets outdated fast. New product questions go unanswered. Support teams are too busy to identify gaps and write new content.",
+      "Customers get long messages instead of clear steps or actions — and keep asking back.",
     icon: FileX,
   },
   {
-    title: "Support Tickets Pile Up",
+    title: "Nothing improves over time",
     description:
-      "Repetitive questions flood your inbox. Your team spends hours answering the same questions daily instead of focusing on complex customer needs.",
+      "New questions appear every day, but no system learns or updates itself.",
     icon: AlertCircle,
   },
 ];
@@ -33,8 +33,8 @@ const problems = [
 export default function Component() {
   return (
     <Section
-      title="The Problem"
-      subtitle="Customer service teams are drowning in repetitive work while knowledge bases rot."
+      title="Problems"
+      subtitle="Same work daily. Nothing improves."
     >
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
         {problems.map((problem, index) => (
