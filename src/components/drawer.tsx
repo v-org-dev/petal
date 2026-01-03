@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/drawer";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { IoMenuSharp } from "react-icons/io5";
 
@@ -60,8 +61,8 @@ export default function drawerDemo() {
               "w-full sm:w-auto text-background flex gap-2"
             )}
           >
-            <Icons.logo className="h-6 w-6" />
             Get Started for Free
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </DrawerFooter>
       </DrawerContent>

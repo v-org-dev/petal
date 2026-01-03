@@ -8,7 +8,7 @@ import { siteConfig } from "@/lib/config";
 import useWindowSize from "@/lib/hooks/use-window-size";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
@@ -126,6 +126,7 @@ export default function PricingSection() {
                 )}
               >
                 {plan.buttonText}
+                <ArrowRight className="h-4 w-4" />
               </Link>
               <p className="mt-6 text-xs leading-5 text-muted-foreground">
                 {plan.description}

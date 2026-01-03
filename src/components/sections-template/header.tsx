@@ -6,6 +6,7 @@ import Menu from "@/components/menu";
 import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -64,8 +65,8 @@ export default function Header() {
                   "w-full sm:w-auto text-background flex gap-2"
                 )}
               >
-                <Icons.logo className="h-6 w-6" />
                 Get Started for Free
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>

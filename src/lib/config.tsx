@@ -24,16 +24,40 @@ export const siteConfig = {
   },
   header: [
     {
-      href: '/#features',
-      label: 'Features',
+      trigger: 'Features',
+      content: {
+        main: {
+          icon: <Icons.logo className="h-6 w-6" />,
+          title: 'AI-Powered Support',
+          description: 'Transform customer service with intelligent automation.',
+          href: '/#features',
+        },
+        items: [
+          {
+            href: '/#features',
+            title: 'Self-Evolving Knowledge Base',
+            description: 'Automatically suggests updates based on daily conversations.',
+          },
+          {
+            href: '/#features',
+            title: 'RAG-Powered Accuracy',
+            description: 'No hallucinations - every answer cites its source.',
+          },
+          {
+            href: '/#features',
+            title: 'A2UI Guided Replies',
+            description: 'Interactive buttons and flows for seamless customer actions.',
+          },
+        ],
+      },
     },
     {
       href: '/pricing',
       label: 'Pricing',
     },
     {
-      href: '/about',
-      label: 'About',
+      href: '/blog',
+      label: 'Blog',
     },
   ],
   pricing: [

@@ -2,10 +2,10 @@
 
 import { motion } from "framer-motion";
 
-import { Icons } from "@/components/icons";
 import HeroVideoDialog from "@/components/magicui/hero-video";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const ease = [0.16, 1, 0.3, 1];
@@ -103,8 +103,8 @@ function HeroCTA() {
             "w-full sm:w-auto text-background flex gap-2"
           )}
         >
-          <Icons.logo className="h-6 w-6" />
           Start free trial
+          <ArrowRight className="h-4 w-4" />
         </Link>
       </motion.div>
       <motion.p
